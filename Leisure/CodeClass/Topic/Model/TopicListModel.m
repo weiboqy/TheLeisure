@@ -1,0 +1,17 @@
+//
+//  TopicListModel.m
+//  Leisure
+//
+//  Created by lanou on 16/3/30.
+//  Copyright © 2016年 xqy. All rights reserved.
+//
+
+#import "TopicListModel.h"
+
+@implementation TopicListModel
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+}
+
+@end

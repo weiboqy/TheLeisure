@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "TopicListModel.h"
 
 @interface TopicInfoViewController : BaseViewController
+
+@property (strong, nonatomic)TopicListModel *model;
 
 @end

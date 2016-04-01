@@ -11,6 +11,8 @@
 #import "DrawerViewController.h"
 #import "MenuViewController.h"
 
+#import "ViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -23,20 +25,22 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     // 默认功能是阅读
-    ReadViewController *readViewController = [[ReadViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:readViewController];
+//    ReadViewController *readViewController = [[ReadViewController alloc] init];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:readViewController];
+//    
+//    // 创建抽屉对象
+//    DrawerViewController *rootController = [[DrawerViewController alloc]initWithController :navigationController];
+//    _drawerVC = rootController;
+//    
+//    // 创建菜单对象
+//    MenuViewController *left = [[MenuViewController alloc] init];
+//    rootController.leftVC = left;
+//    
+//    // 将抽屉对象设置成window的主视图控制器
+//    self.window.rootViewController = rootController;
     
-    // 创建抽屉对象
-    DrawerViewController *rootController = [[DrawerViewController alloc]initWithController :navigationController];
-    _drawerVC = rootController;
-    
-    // 创建菜单对象
-    MenuViewController *left = [[MenuViewController alloc] init];
-    rootController.leftVC = left;
-    
-    // 将抽屉对象设置成window的主视图控制器
-    self.window.rootViewController = rootController;
-    
+    ViewController *viewController = [[ViewController alloc]init];
+    self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];;
     // Override point for customization after application launch.
     return YES;

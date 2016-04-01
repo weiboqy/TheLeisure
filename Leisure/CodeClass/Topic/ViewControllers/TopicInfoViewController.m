@@ -9,6 +9,7 @@
 #import "TopicInfoViewController.h"
 
 @interface TopicInfoViewController ()
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -16,6 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.titleLabel.text = self.model.title;
+    
+    
     // Do any additional setup after loading the view from its nib.
 }
 

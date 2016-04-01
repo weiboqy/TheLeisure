@@ -11,4 +11,7 @@
 
 @interface RadioDetailViewController : BaseViewController
 
+/**radioID*/
+@property (copy, nonatomic)NSString *radioid;
+
 @end

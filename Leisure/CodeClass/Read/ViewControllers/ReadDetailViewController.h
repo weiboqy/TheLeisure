@@ -11,4 +11,7 @@
 
 @interface ReadDetailViewController : BaseViewController
 
+/** 阅读主题ID */
+@property (copy, nonatomic)NSString *typeID;
+
 @end

@@ -29,7 +29,7 @@
 - (instancetype)initWithController:(UIViewController *)controller{
     if (self = [super init]) {
         _root = controller;
-        NSLog(@"初始化成功");
+        NSLog(@"efefe");
     }
     return self;
 }
@@ -102,7 +102,6 @@
 
 - (void)showRootController:(BOOL)animated{
     [_tap setEnabled:NO]; // 让单击手势不能响应
-    
     // 设置根视图能够响应
     _root.view.userInteractionEnabled = YES;
     
@@ -136,7 +135,6 @@
     UIView *view = self.leftVC.view;
     CGRect frame = self.view.bounds;
     frame.size.width = kScreenWidth;
-    frame.origin.y = 15;
     view.frame = frame;
     [self.view insertSubview:view atIndex:0];
     

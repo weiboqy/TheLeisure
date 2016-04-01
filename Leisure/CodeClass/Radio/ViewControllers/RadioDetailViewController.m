@@ -7,15 +7,32 @@
 //
 
 #import "RadioDetailViewController.h"
+#import "RadioListModel.h"
 
 @interface RadioDetailViewController ()
+
+
+
 
 @end
 
 @implementation RadioDetailViewController
 
+
+- (void)reloadData{
+    NSLog(@"33");
+    [NetWorkRequesManager requestWithType:POST urlString:RADIODETAILMORE_URL parDic:@{@"radioid" : _radioid} finish:^(NSData *data) {
+        NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingMutableContainers) error:nil];
+        NSLog(@"详情列表 dataDic = %@", dataDic);
+    } error:^(NSError *error) {
+        
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self reloadData];
+    NSLog(@"11");
     // Do any additional setup after loading the view from its nib.
 }
 
