@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C63A6C609FAF42D0FFAF5A6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB5CC89DB51EF8FA4ECE0A8 /* libPods.a */; };
+		790BE1301CAE5788008E2713 /* ReadDetailHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 790BE12F1CAE5788008E2713 /* ReadDetailHeader.m */; };
 		7910D9881CACB735009AB522 /* BaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7910D9871CACB735009AB522 /* BaseCollectionViewCell.m */; };
 		794BAD5F1CACB804009C2EE9 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 794BAD5E1CACB804009C2EE9 /* BaseTableViewCell.m */; };
 		794BAD621CACB926009C2EE9 /* FactoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 794BAD611CACB926009C2EE9 /* FactoryTableViewCell.m */; };
@@ -330,6 +331,8 @@
 /* Begin PBXFileReference section */
 		393C2439DA50290C0C5B70FE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		3EB5CC89DB51EF8FA4ECE0A8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		790BE12E1CAE5788008E2713 /* ReadDetailHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadDetailHeader.h; sourceTree = "<group>"; };
+		790BE12F1CAE5788008E2713 /* ReadDetailHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadDetailHeader.m; sourceTree = "<group>"; };
 		7910D9861CACB735009AB522 /* BaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewCell.h; sourceTree = "<group>"; };
 		7910D9871CACB735009AB522 /* BaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewCell.m; sourceTree = "<group>"; };
 		794BAD5D1CACB804009C2EE9 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
@@ -1420,6 +1423,8 @@
 				79C6AED01CA9296500354BBB /* TopicInfoViewController.h */,
 				79C6AED11CA9296500354BBB /* TopicInfoViewController.m */,
 				79C6AED21CA9296500354BBB /* TopicInfoViewController.xib */,
+				790BE12E1CAE5788008E2713 /* ReadDetailHeader.h */,
+				790BE12F1CAE5788008E2713 /* ReadDetailHeader.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1918,6 +1923,7 @@
 				79C6AECE1CA9295A00354BBB /* TopicViewController.m in Sources */,
 				79626C291CAB7EF10097FCA9 /* ProductListModel.m in Sources */,
 				794BAD7B1CAD26DC009C2EE9 /* ReadCollectionFootView.m in Sources */,
+				790BE1301CAE5788008E2713 /* ReadDetailHeader.m in Sources */,
 				79C6AEDC1CA929A900354BBB /* BaseModel.m in Sources */,
 				79626D121CABB06D0097FCA9 /* TopicCounterListModel.m in Sources */,
 				79C6AEBF1CA9292B00354BBB /* ReadViewController.m in Sources */,

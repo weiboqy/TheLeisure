@@ -86,7 +86,7 @@
         }
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.collction reloadData];
+            
             //创建滚动列表视图
             [self creatScrollView];
         });

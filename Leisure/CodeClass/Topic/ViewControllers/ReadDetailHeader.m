@@ -1,14 +1,14 @@
 //
-//  TopicHeaderView.m
+//  ReadDetailHeader.m
 //  Leisure
 //
-//  Created by lanou on 16/3/31.
+//  Created by lanou on 16/4/1.
 //  Copyright © 2016年 xqy. All rights reserved.
 //
 
-#import "TopicHeaderView.h"
+#import "ReadDetailHeader.h"
 
-@implementation TopicHeaderView
+@implementation ReadDetailHeader
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
