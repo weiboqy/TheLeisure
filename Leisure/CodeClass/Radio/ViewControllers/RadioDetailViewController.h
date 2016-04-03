@@ -10,12 +10,14 @@
 #import "BaseViewController.h"
 #import "RadioListModel.h"
 
+
 @interface RadioDetailViewController : BaseViewController
 
 /**radioID*/
 @property (copy, nonatomic)NSString *radioid;
 
 @property (strong, nonatomic)RadioListModel *model;
+
 
 
 @end

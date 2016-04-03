@@ -10,13 +10,14 @@
 #import "RadioListModel.h"
 #import "RadioCarouseModel.h"
 #import "RadioDetailViewController.h"
-#import "SDCycleScrollView.h"
+#import <SDCycleScrollView.h>
 #import "RadioHeader.h"
 #import "RadioTableViewCell.h"
 #import "RadioCollectionViewCell.h"
+#import <UIButton+WebCache.h>
 
 
-@interface RadioViewController ()<SDCycleScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RadioViewController ()<SDCycleScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 /**列表数据源*/
 @property (strong, nonatomic)NSMutableArray *listArr;
 /**轮播图数据源*/
@@ -36,9 +37,8 @@
 
 /** 列表展示 */
 @property (strong, nonatomic)UITableView *tableView;
-//@property (strong, nonatomic)RadioHeader *header;
+@property (strong, nonatomic)RadioHeader *header;
 @property (strong, nonatomic)UICollectionView *collection;
-@property (strong, nonatomic)UIView *header;
 
 
 @end
@@ -76,7 +76,7 @@
 - (void)requestFirstData {
     [NetWorkRequesManager requestWithType:POST urlString:RADIOLIST_URL parDic:@{} finish:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves | NSJSONReadingMutableContainers error:nil];
-           QYLog(@"%@", dic);
+//           QYLog(@"%@", dic);
         
         //获取所以电台列表信息
         for (NSDictionary *listDic in dic[@"data"][@"allList"]) {
@@ -96,7 +96,8 @@
         for (NSDictionary *carouselDic in carouselArr) {
             RadioCarouseModel *carouseModel = [[RadioCarouseModel alloc]init];
             [carouseModel setValuesForKeysWithDictionary:carouselDic];
-            [self.imageArr addObject:[NSString stringWithFormat:@"%@", carouseModel.img]];
+            [self.imageArr addObject:carouseModel.img];
+            QYLog(@"%@", carouseModel.img);
             [self.carouselArr addObject:carouseModel];
         }
         
@@ -116,6 +117,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             [self.collection reloadData];
+            [self creatScrollViewView];
+            [self setupHeadViewBtnByBackGroundImage];
         });
         
     } error:^(NSError *error) {
@@ -143,10 +146,7 @@
         
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
-            //            RadioDetailViewController *detailVC = [[RadioDetailViewController alloc]init];
-            //            RadioListModel *listModel = [self.listArr objectAtIndex:0];
-            //            detailVC.radioid = listModel.radioid;
-            //            [self.navigationController pushViewController:detailVC animated:YES];
+          
             [self.tableView reloadData];
             [self.collection reloadData];
         });
@@ -174,75 +174,67 @@
 #pragma  mark  ---创建列表显示
 
 - (void)creatListView {
-    self.header = [[UIView alloc]init];
-    self.header.frame = CGRectMake(0, 0, ScreenWidth, 265);
-    UILabel *allRadio = [[UILabel alloc]initWithFrame:CGRectMake(0, 255, ScreenWidth, 15)];
-    allRadio.text = @" 全部电台·All stations-------------------------------------------";
-    allRadio.font = [UIFont systemFontOfSize:12];
-    [self.header addSubview:allRadio];
-    
+    // 初始化headView
+    _header = [[RadioHeader alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 300)];
     self.tableView = [[UITableView alloc]initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"RadioTableViewCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([RadioTableViewCell class])];
-    self.tableView.tableHeaderView = self.header;
+    self.tableView.tableHeaderView = _header;
     [self.view addSubview:self.tableView];
     [self creatScrollViewView];
-    [self creatCollectView];
+}
+#pragma mark -tableView的headview中的按钮实现
+
+//  给表头按钮添加背景图片
+
+- (void)setupHeadViewBtnByBackGroundImage {
+    [self setupBtn:_header.leftBtn tag:101 index:0];
+    [self setupBtn:_header.midBtn tag:102 index:1];
+    [self setupBtn:_header.rightBtn tag:103 index:2];
 }
 
+- (void)setupBtn:(UIButton *)button tag:(int)tag index:(int)index {
+    RadioListModel *model = self.hotArr[index];
+    button.tag = tag;
+    [button addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchDown];
+    [button sd_setBackgroundImageWithURL:[NSURL URLWithString:model.coverimg] forState:UIControlStateNormal placeholderImage:PLACEHOLDERIMAGE];
+}
+
+
+// 表头按钮的点击方法
+
+- (void)btnClick:(UIButton *)button {
+    int index = (int)button.tag - 101;
+    RadioListModel *model = self.hotArr[index];
+    RadioDetailViewController *detailVC = [[RadioDetailViewController alloc] init];
+    detailVC.radioid = model.radioid;
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
 //利用第三方类库SDCyclScrollView创建轮播图
+
 - (void)creatScrollViewView{
-    SDCycleScrollView *scrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, 150) imageURLStringsGroup:self.imageArr];
+    SDCycleScrollView *scrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, 150) imageURLStringsGroup:_imageArr];
+    // 分页控件的位置
     scrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
+    // 翻页样式
     scrollView.pageControlStyle = SDCycleScrollViewPageContolStyleClassic;
+    // 自动翻滚时间
+    scrollView.autoScrollTimeInterval = 5;
     scrollView.delegate = self;
-    [self.header addSubview:scrollView];
+    [_header.scrollView addSubview:scrollView];
 }
 
-- (void)creatCollectView{
-    
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    //设置行直接的最小间隔
-    layout.minimumInteritemSpacing = 2;
-    //设置列之间的最小间隔
-    layout.minimumLineSpacing = 2;
-    //设置item的大小
-    CGFloat layoutW = (ScreenWidth - 30 ) / 3;
-    layout.itemSize = CGSizeMake(layoutW, 80);
-    //滚动方向
-    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    //设置分区上下左右的边距
-    layout.sectionInset = UIEdgeInsetsMake(5, 10, 10, 5);
-    
-    //去除顶端空白区域(自动调整滚动视图)
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    self.collection = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 155, ScreenWidth, 95) collectionViewLayout:layout];
-    
-    self.collection.dataSource = self;
-    self.collection.delegate = self;
-    self.collection.backgroundColor = [UIColor clearColor];
-    
-    //注册cell
-    [self.collection registerNib:[UINib nibWithNibName:@"RadioCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:NSStringFromClass([RadioCollectionViewCell class])];
-    
-    //添加子视图
-    [self.header addSubview:self.collection];
+//  第三方自动轮播图代理方法，点击选中事件
+
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
+    RadioDetailViewController *detailVC = [[RadioDetailViewController alloc] init];
+    RadioCarouseModel *model = self.carouselArr[index];
+    detailVC.radioid = [model.url substringFromIndex:12];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-#pragma mark  ----collectViewDelegate \ collectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.hotArr.count;
-}
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RadioCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([RadioCollectionViewCell class]) forIndexPath:indexPath];
-    RadioListModel *model = self.hotArr[indexPath.row];
-    //    cell.iconImage.image = [UIImage imageNamed:model.coverimg];
-    [cell.iconImage sd_setImageWithURL:[NSURL URLWithString:model.coverimg] placeholderImage:PLACEHOLDERIMAGE];
-    return  cell;
-}
 
 #pragma mark  --UITableViewDelegate \ UITableViewDataSource
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -264,7 +256,6 @@
     RadioDetailViewController *detailVC = [[RadioDetailViewController alloc]init];
     RadioListModel *model = self.listArr[indexPath.row];
     detailVC.radioid = model.radioid;
-    detailVC.model = model;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 

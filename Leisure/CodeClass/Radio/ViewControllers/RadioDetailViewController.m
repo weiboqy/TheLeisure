@@ -13,6 +13,7 @@
 #import "RadioDetailTableViewCell.h"
 #import "RadioUserInfoModel.h"
 #import "RadioPlayViewController.h"
+#import "RadioDetailHeader.h"
 
 
 @interface RadioDetailViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -24,11 +25,13 @@
 
 /**列表*/
 @property (strong, nonatomic)UITableView *tableView;
-@property (strong, nonatomic)UIView *headerView;
+@property (strong, nonatomic)RadioDetailHeader *headerView;
+
 @end
 
 @implementation RadioDetailViewController
 
+#pragma mark  ----懒加载
 - (NSMutableArray *)listArr {
     if (_listArr == nil) {
         _listArr = [[NSMutableArray alloc]initWithCapacity:0];
@@ -53,23 +56,23 @@
             [self.listArr addObject:listModel];
             QYLog(@"%@", self.listArr);
         };
-//        for (RadioUserInfoModel *model in dataDic[@"data"][@"radoInfo"][@"userinfo"]) {
-//            [self.headerArr addObject:model];
-//            QYLog(@"==%@", self.headerArr);
-//        }
+        
+        //获取头视图信息
+        NSDictionary *headDict = dataDic[@"data"][@"radioInfo"];
+        RadioInfoModel *model =[[RadioInfoModel alloc] init];
+        [model setValuesForKeysWithDictionary:headDict];
+        RadioUserInfoModel *userModel = [[RadioUserInfoModel alloc]init];
+        NSDictionary *userDic = headDict[@"userinfo"];
+        [userModel setValuesForKeysWithDictionary:userDic];
+        model.userInfoModel = userModel;
+        QYLog(@"==== %@, uname = %@", model.desc, userModel.uname);
         dispatch_async(dispatch_get_main_queue(), ^{
+            //给头视图内部控件赋值
+            self.headerView.model = model;
+            //刷新tableview
             [self.tableView reloadData];
+            
         });
-        //获取头视图的信息
-//        for (NSDictionary *dic in dataDic[@"data"][@"radioInfo"]) {
-//            RadioInfoModel *infoModel = [[RadioInfoModel alloc]init];
-//            RadioUserInfoModel *userInfoModel = [[RadioUserInfoModel alloc]init];
-//            [infoModel setValuesForKeysWithDictionary:dic];
-//            [userInfoModel setValuesForKeysWithDictionary:dic[@"userinfo"]];
-//            infoModel.userInfoModel = userInfoModel;
-//            [self.headerArr addObject:infoModel];
-//            QYLog(@"title  = %@", infoModel.title);
-//        }
         
     } error:^(NSError *error) {
         
@@ -78,49 +81,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //加载数据
     [self reloadData];
+    
+    //已导航条左下角为原点
     
     self.navigationController.navigationBar.translucent = YES;
     
+    //创建视图列表
     [self creatListView];
     // Do any additional setup after loading the view from its nib.
 }
 - (void)creatListView {
-    self.headerView = [[UIView alloc]init];
+    //初始化头视图
+    self.headerView = [[RadioDetailHeader alloc]init];
     self.headerView.frame = CGRectMake(0, 0, ScreenWidth, 260);
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", self.model.coverimg]] placeholderImage:PLACEHOLDERIMAGE];
-    [self.headerView addSubview:imageView];
-    
-    UIImageView *iconImage = [[UIImageView alloc]initWithFrame:CGRectMake(20, 170, 30, 30)];
-    [iconImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", self.model.userinfo.icon]] placeholderImage:PLACEHOLDERIMAGE];
-    iconImage.layer.cornerRadius = 15;
-    iconImage.layer.masksToBounds = YES;
-    [self.headerView addSubview:iconImage];
-    
-    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(55, 180, 100, 20)];
-    nameLabel.text = [NSString stringWithFormat:@"%@",self.model.userinfo.uname];
-    nameLabel.font = [UIFont systemFontOfSize:13];
-    nameLabel.textColor = [UIColor blueColor];
-    [self.headerView addSubview:nameLabel];
-    
-    UILabel *descLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 220, 200, 20)];
-    descLabel.text = [NSString stringWithFormat:@"%@", self.model.desc];
-    [self.headerView addSubview:descLabel];
-    
-    UIImageView *imageViewVV = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth - 120, 175, 10, 10)];
-    imageViewVV.image = [UIImage imageNamed:@"u58.png"];
-    [self.headerView addSubview:imageViewVV];
-    
-    UILabel *count = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - 100, 170, 100, 20)];
-    count.text = [NSString stringWithFormat:@"%@", self.model.count];
-    count.font = [UIFont systemFontOfSize:12];
-    [self.headerView addSubview:count];
     
     self.tableView  = [[UITableView alloc]initWithFrame:[[UIScreen mainScreen]bounds] style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tableHeaderView = self.headerView;
+    //注册cell
     [self.tableView registerNib:[UINib nibWithNibName:@"RadioDetailTableViewCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([RadioDetailTableViewCell class])];
     [self.view addSubview:self.tableView];
     
