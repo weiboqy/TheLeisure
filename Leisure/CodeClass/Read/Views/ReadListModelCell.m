@@ -15,7 +15,7 @@
 - (void)setDataWithModel:(ReadListModel *)model {
     self.nameLabel.text =  [NSString stringWithFormat:@"%@%@", model.name, model.enname];
 
-    [self.coveringImage sd_setImageWithURL:[NSURL URLWithString:model.coverimg] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    [self.coveringImage sd_setImageWithURL:[NSURL URLWithString:model.coverimg] placeholderImage:PLACEHOLDERIMAGE];
 }
 
 @end

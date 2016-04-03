@@ -16,9 +16,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItems = @[
+                                                [UIBarButtonItem itemWithImage:@"时" selectImage:nil target:self action:@selector(timeAction)],
+                                                [UIBarButtonItem itemWithImage:@"享" selectImage:nil target:self action:@selector(share)],
+                                                [UIBarButtonItem itemWithImage:@"藏" selectImage:nil target:self action:@selector(collect)],
+                                                [UIBarButtonItem itemWithImage:@"循" selectImage:nil target:self action:@selector(circulation)]
+                                                ];
     // Do any additional setup after loading the view from its nib.
 }
-
+#pragma mark  ---item的功能实现
+- (void)circulation {
+    QYLog(@"%s", __func__);
+}
+- (void)collect {
+    QYLog(@"%s", __func__);
+}
+- (void)share {
+    QYLog(@"%s", __func__);
+}
+- (void)timeAction {
+    QYLog(@"%s", __func__);
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

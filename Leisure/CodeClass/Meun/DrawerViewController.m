@@ -29,7 +29,6 @@
 - (instancetype)initWithController:(UIViewController *)controller{
     if (self = [super init]) {
         _root = controller;
-        NSLog(@"efefe");
     }
     return self;
 }
@@ -85,7 +84,7 @@
     
     // 在根视图导航栏上添加左按钮
     if (canShowLeft) {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_menu_icon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showLeft:)];
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(showLeft:)];
         topController.navigationItem.leftBarButtonItem = button;
     } else {
         topController.navigationItem.leftBarButtonItem = nil;
@@ -135,6 +134,7 @@
     UIView *view = self.leftVC.view;
     CGRect frame = self.view.bounds;
     frame.size.width = kScreenWidth;
+    frame.origin.y = 30;
     view.frame = frame;
     [self.view insertSubview:view atIndex:0];
     

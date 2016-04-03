@@ -20,5 +20,14 @@
 #import "URLHeaderDefine.h"
 #import "ConstantsDefine.h"
 #import "NetWorkRequesManager.h"
+#import "UIBarButtonItem+QYExtension.h"
+
+#ifdef DEBUG
+#define QYLog(...) NSLog(__VA_ARGS__)
+#else
+#define QYLog(...)
+#endif
+
+#define PLACEHOLDERIMAGE [UIImage imageNamed:@"placeHolder"]
 
 #endif /* PinaKe_Prefix_pch */

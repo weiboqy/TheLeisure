@@ -16,7 +16,7 @@
 - (void)setDataWithModel:(ReadDetailModel *)model {
     self.titleLabel.text = model.title;
     self.contenLabel.text = model.content;
-    [self.coveingImage sd_setImageWithURL:[NSURL URLWithString:model.coverimg] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    [self.coveingImage sd_setImageWithURL:[NSURL URLWithString:model.coverimg] placeholderImage:PLACEHOLDERIMAGE];
 }
 
 /*

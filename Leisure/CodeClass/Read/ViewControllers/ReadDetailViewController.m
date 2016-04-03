@@ -131,8 +131,7 @@
 
 #pragma mark  ----UIScrollViewDelegate 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.rootScrollView == scrollView) {
-        int number = (int)(scrollView.contentOffset.x / scrollView.frame.size.width);
+        int number = (int)(scrollView.contentOffset.x / ScreenWidth);
         if (number == 0) {
             self.requestSort = 0;
             if (self.addtimeListArr.count != 0) {
@@ -148,8 +147,6 @@
             self.segment.selectedSegmentIndex = 1;
             [self requestDataWithSort:@"hot"];
         }
-    }
-    
 }
 
 

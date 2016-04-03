@@ -50,6 +50,7 @@
     //手势 用来取消左视图
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
     [self.baseVC.view addGestureRecognizer:tap];
+    [self.naVC.view addGestureRecognizer:tap];
     
     
     
@@ -75,7 +76,8 @@
             rootView.frame = frame;
         } completion:^(BOOL finished) {
             self.showLeft = NO;
-            NSLog(@"1111");
+            QYLog(@"点击到了");
+            
         }];
     }
 }
