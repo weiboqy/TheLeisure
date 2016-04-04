@@ -26,6 +26,8 @@
 		791F491A1CB11CFB00856FC9 /* 循.png in Resources */ = {isa = PBXBuildFile; fileRef = 791F49161CB11CFB00856FC9 /* 循.png */; };
 		791F4A2C1CB13FEF00856FC9 /* u58.png in Resources */ = {isa = PBXBuildFile; fileRef = 791F4A2B1CB13FEF00856FC9 /* u58.png */; };
 		791F4A2F1CB143DD00856FC9 /* RadioDetailHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F4A2E1CB143DD00856FC9 /* RadioDetailHeader.m */; };
+		791F4A331CB14FA200856FC9 /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */; };
+		791F4A361CB1510F00856FC9 /* BaseNavigtionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F4A351CB1510F00856FC9 /* BaseNavigtionViewController.m */; };
 		794BAD5F1CACB804009C2EE9 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 794BAD5E1CACB804009C2EE9 /* BaseTableViewCell.m */; };
 		794BAD621CACB926009C2EE9 /* FactoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 794BAD611CACB926009C2EE9 /* FactoryTableViewCell.m */; };
 		794BAD651CACBBEB009C2EE9 /* FactoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 794BAD641CACBBEB009C2EE9 /* FactoryCollectionViewCell.m */; };
@@ -131,8 +133,8 @@
 		791F49081CB10DF100856FC9 /* RadioDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioDetailTableViewCell.h; sourceTree = "<group>"; };
 		791F49091CB10DF100856FC9 /* RadioDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioDetailTableViewCell.m; sourceTree = "<group>"; };
 		791F490A1CB10DF100856FC9 /* RadioDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RadioDetailTableViewCell.xib; sourceTree = "<group>"; };
-		791F49101CB11AE400856FC9 /* UIBarButtonItem+QYExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+QYExtension.h"; sourceTree = "<group>"; };
-		791F49111CB11AE400856FC9 /* UIBarButtonItem+QYExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+QYExtension.m"; sourceTree = "<group>"; };
+		791F49101CB11AE400856FC9 /* UIBarButtonItem+QYExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIBarButtonItem+QYExtension.h"; path = "../../Tools/UIBarButtonItem+QYExtension.h"; sourceTree = "<group>"; };
+		791F49111CB11AE400856FC9 /* UIBarButtonItem+QYExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIBarButtonItem+QYExtension.m"; path = "../../Tools/UIBarButtonItem+QYExtension.m"; sourceTree = "<group>"; };
 		791F49131CB11CFB00856FC9 /* 藏.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "藏.png"; sourceTree = "<group>"; };
 		791F49141CB11CFB00856FC9 /* 时.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "时.png"; sourceTree = "<group>"; };
 		791F49151CB11CFB00856FC9 /* 享.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "享.png"; sourceTree = "<group>"; };
@@ -140,6 +142,10 @@
 		791F4A2B1CB13FEF00856FC9 /* u58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = u58.png; sourceTree = "<group>"; };
 		791F4A2D1CB143DD00856FC9 /* RadioDetailHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioDetailHeader.h; sourceTree = "<group>"; };
 		791F4A2E1CB143DD00856FC9 /* RadioDetailHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioDetailHeader.m; sourceTree = "<group>"; };
+		791F4A311CB14FA200856FC9 /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavigationBar.h; sourceTree = "<group>"; };
+		791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavigationBar.m; sourceTree = "<group>"; };
+		791F4A341CB1510F00856FC9 /* BaseNavigtionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigtionViewController.h; sourceTree = "<group>"; };
+		791F4A351CB1510F00856FC9 /* BaseNavigtionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigtionViewController.m; sourceTree = "<group>"; };
 		794BAD5D1CACB804009C2EE9 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
 		794BAD5E1CACB804009C2EE9 /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		794BAD601CACB926009C2EE9 /* FactoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FactoryTableViewCell.h; sourceTree = "<group>"; };
@@ -295,6 +301,19 @@
 				3EB5CC89DB51EF8FA4ECE0A8 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		791F4A301CB14F2500856FC9 /* navigationController */ = {
+			isa = PBXGroup;
+			children = (
+				791F49101CB11AE400856FC9 /* UIBarButtonItem+QYExtension.h */,
+				791F49111CB11AE400856FC9 /* UIBarButtonItem+QYExtension.m */,
+				791F4A311CB14FA200856FC9 /* CustomNavigationBar.h */,
+				791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */,
+				791F4A341CB1510F00856FC9 /* BaseNavigtionViewController.h */,
+				791F4A351CB1510F00856FC9 /* BaseNavigtionViewController.m */,
+			);
+			path = navigationController;
 			sourceTree = "<group>";
 		};
 		79A100F41CAA6C0A00E069CA /* image */ = {
@@ -647,8 +666,6 @@
 				79A100FA1CAA868500E069CA /* ConstantsDefine.h */,
 				79A100FB1CAA869700E069CA /* NetWorkRequesManager.h */,
 				79A100FC1CAA869700E069CA /* NetWorkRequesManager.m */,
-				791F49101CB11AE400856FC9 /* UIBarButtonItem+QYExtension.h */,
-				791F49111CB11AE400856FC9 /* UIBarButtonItem+QYExtension.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -656,6 +673,7 @@
 		79C6AEDD1CA92A2100354BBB /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				791F4A301CB14F2500856FC9 /* navigationController */,
 				79C6AE4F1CA924F400354BBB /* AppDelegate.h */,
 				79C6AE501CA924F400354BBB /* AppDelegate.m */,
 				79C6AE521CA924F400354BBB /* ViewController.h */,
@@ -885,6 +903,7 @@
 				790E72441CAFFDFC00D014C9 /* RadioHeader.m in Sources */,
 				79C6AEE61CA933AB00354BBB /* MenuViewController.m in Sources */,
 				79C6AEBA1CA9291800354BBB /* RadioPlayViewController.m in Sources */,
+				791F4A361CB1510F00856FC9 /* BaseNavigtionViewController.m in Sources */,
 				790E724D1CB0019D00D014C9 /* RadioCollectionViewCell.m in Sources */,
 				79C6AECE1CA9295A00354BBB /* TopicViewController.m in Sources */,
 				79626C291CAB7EF10097FCA9 /* ProductListModel.m in Sources */,
@@ -892,6 +911,7 @@
 				790BE1301CAE5788008E2713 /* ReadDetailHeader.m in Sources */,
 				79C6AEDC1CA929A900354BBB /* BaseModel.m in Sources */,
 				79626D121CABB06D0097FCA9 /* TopicCounterListModel.m in Sources */,
+				791F4A331CB14FA200856FC9 /* CustomNavigationBar.m in Sources */,
 				79C6AEBF1CA9292B00354BBB /* ReadViewController.m in Sources */,
 				79626D1A1CABC0A10097FCA9 /* RadioListModel.m in Sources */,
 				79A101001CAA9F3600E069CA /* ReadListModel.m in Sources */,

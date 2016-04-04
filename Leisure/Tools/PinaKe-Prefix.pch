@@ -21,6 +21,7 @@
 #import "ConstantsDefine.h"
 #import "NetWorkRequesManager.h"
 #import "UIBarButtonItem+QYExtension.h"
+#import "CustomNavigationBar.h"
 
 #ifdef DEBUG
 #define QYLog(...) NSLog(__VA_ARGS__)

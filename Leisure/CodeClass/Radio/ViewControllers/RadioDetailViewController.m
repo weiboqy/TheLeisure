@@ -91,8 +91,23 @@
     
     //创建视图列表
     [self creatListView];
+    
+    //自定义导航条
+    [self addCustomNavigationBar];
     // Do any additional setup after loading the view from its nib.
 }
+//自定义导航条
+- (void)addCustomNavigationBar {
+    CustomNavigationBar *bar = [[CustomNavigationBar alloc] initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
+    [bar.menuBtu addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    bar.titleLabel.text = _headerView.model.title;
+    
+    [self.view addSubview:bar];
+}
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)creatListView {
     //初始化头视图
     self.headerView = [[RadioDetailHeader alloc]init];
@@ -105,6 +120,7 @@
     //注册cell
     [self.tableView registerNib:[UINib nibWithNibName:@"RadioDetailTableViewCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([RadioDetailTableViewCell class])];
     [self.view addSubview:self.tableView];
+    
     
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "DrawerViewController.h"
+#import "CustomNavigationBar.h"
 #define kScreenWidth [[UIScreen mainScreen] bounds].size.width
 #define kLeftWidth 280.0f
 @interface DrawerViewController ()
@@ -84,8 +85,26 @@
     
     // 在根视图导航栏上添加左按钮
     if (canShowLeft) {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(showLeft:)];
-        topController.navigationItem.leftBarButtonItem = button;
+        [topController.navigationController setNavigationBarHidden:YES];
+        if (![@"TopicViewController" isEqualToString:NSStringFromClass([topController class])]) {
+            CustomNavigationBar *bar = [[CustomNavigationBar alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, 44)];
+            [topController.view addSubview:bar];
+            [bar.menuBtu setBackgroundImage:[UIImage imageNamed:@"菜单"] forState:UIControlStateNormal];
+            [bar.menuBtu addTarget:self action:@selector(showLeft:) forControlEvents:UIControlEventTouchUpInside];
+            if ([@"ReadViewController" isEqualToString:NSStringFromClass([topController class])]) {
+                bar.titleLabel.text = @"阅读";
+            } else if ([@"RadioViewController" isEqualToString:NSStringFromClass([topController class])]) {
+                bar.titleLabel.text = @"电台";
+            } else if ([@"ProductViewController" isEqualToString:NSStringFromClass([topController class])]) {
+                bar.titleLabel.text = @"良品";
+            }
+        } else {
+            CustomNavigationBar *bar = [[CustomNavigationBar alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth / 2, 44)];
+            [topController.view addSubview:bar];
+            [bar.menuBtu setBackgroundImage:[UIImage imageNamed:@"菜单"] forState:UIControlStateNormal];
+            [bar.menuBtu addTarget:self action:@selector(showLeft:) forControlEvents:UIControlEventTouchUpInside];
+            bar.titleLabel.text = @"话题";
+        }
     } else {
         topController.navigationItem.leftBarButtonItem = nil;
     }
