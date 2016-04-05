@@ -25,6 +25,7 @@
 #import <SDCycleScrollView.h>
 #import <UIButton+WebCache.h>
 #import "UIImageView+WebCache.h"
+#import <MJRefresh/MJRefresh.h>
 
 
 #ifdef DEBUG

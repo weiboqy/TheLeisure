@@ -11,17 +11,18 @@
 #import "FactoryTableViewCell.h"
 
 
-@interface ReadDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
-
-
+@interface ReadDetailViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 /**请求数据的类型*/  //0最新 1热门
 @property (assign, nonatomic)NSInteger requestSort;
 
 /**请求开始位置 */
-@property (assign, nonatomic)NSInteger start;
+@property (assign, nonatomic)NSInteger startAddtime;
+@property (assign, nonatomic)NSInteger startHot;
+
 /**每次请求的数据条数*/
-@property (assign, nonatomic)NSInteger limit;
+@property (assign, nonatomic)NSInteger limit; //默认是10
+
 /**热门数据源*/
 @property (strong, nonatomic)NSMutableArray *hotListArr;
 /**最新数据源*/
@@ -36,6 +37,10 @@
 /**导航条按钮*/
 @property (strong, nonatomic)UIButton *NEW;
 @property (strong, nonatomic)UIButton *HOT;
+
+/**请求参数*/
+@property (assign, nonatomic)BOOL isHot;
+@property (assign, nonatomic)BOOL isAddtime;
 
 @end
 
@@ -55,7 +60,22 @@
 }
 
 - (void)requestDataWithSort:(NSString *)sort {
-    [NetWorkRequesManager requestWithType:POST urlString:READDETAILLIST_URL parDic:@{@"sort" : sort, @"start" : @(_start), @"limit" : @(_limit), @"typeid" : _typeID} finish:^(NSData *data) {
+    NSMutableDictionary *parDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    parDic[@"sort"] = sort;
+    if ([sort isEqualToString:@"hot"]) {
+        parDic[@"start"] = @(_startHot);
+    }else {
+        parDic[@"start"] = @(_startAddtime);
+    }
+    parDic[@"limit"] = @(_limit);
+    parDic[@"typeid"] = _typeID;
+    [NetWorkRequesManager requestWithType:POST urlString:READDETAILLIST_URL parDic:parDic finish:^(NSData *data) {
+        if (_isAddtime == 0) {
+            [self.addtimeListArr removeAllObjects];
+        }
+        if (_isHot == 0) {
+            [self.hotListArr removeAllObjects];
+        }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
         QYLog(@"%@", dic);
         //获取详情列表里的数据源
@@ -74,14 +94,24 @@
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.requestSort == 0) {
+                _isAddtime = 1;
                 [self.addTableView reloadData];
-                
-            }
-            if (self.requestSort == 1) {
+                //停止刷新;
+                [self.addTableView.mj_header endRefreshing];
+                [self.addTableView.mj_footer endRefreshing];
+                [self.hotTableView.mj_header endRefreshing];
+                [self.hotTableView.mj_footer endRefreshing];
+            }else {
+                _isHot = 1;
                 [self.hotTableView reloadData];
-                
+                //停止刷新
+                [self.hotTableView.mj_header endRefreshing];
+                [self.hotTableView.mj_footer endRefreshing];
+                [self.addTableView.mj_header endRefreshing];
+                [self.addTableView.mj_footer endRefreshing];
             }
-//            [self addCustomNavigationBar];
+            
+            
         });
     } error:^(NSError *error) {
         
@@ -100,12 +130,12 @@
     self.rootScrollView.showsHorizontalScrollIndicator = NO;
     
     //最新列表
-    self.addTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 10, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    self.addTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 10, ScreenWidth, ScreenHeight - 60) style:UITableViewStylePlain];
     self.addTableView.delegate = self;
     self.addTableView.dataSource = self;
     
     //热门列表
-    self.hotTableView = [[UITableView alloc]initWithFrame:CGRectMake(ScreenWidth, 10, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    self.hotTableView = [[UITableView alloc]initWithFrame:CGRectMake(ScreenWidth, 10, ScreenWidth, ScreenHeight - 60) style:UITableViewStylePlain];
     self.hotTableView.delegate = self;
     self.hotTableView.dataSource = self;
     
@@ -118,39 +148,13 @@
     [self.view addSubview:self.rootScrollView];
 }
 
-#pragma mark  ----UIScrollViewDelegate 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-        int number = (int)(scrollView.contentOffset.x / ScreenWidth);
-        if (number == 0) {
-            //修改按钮的背景色
-            [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
-            [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
-            self.requestSort = 0;
-            if (self.addtimeListArr.count != 0) {
-                return;
-            }
-            _NEW.selected = YES;
-            _HOT.selected = NO;
-            [self requestDataWithSort:@"addtime"];
-        }else if(number == 1){
-            //修改按钮的背景色
-            [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
-            [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
-            self.requestSort = 1;
-            if (self.hotListArr.count != 0) {
-                return;
-            }
-            _HOT.selected = YES;
-            _NEW.selected = NO;
-            [self requestDataWithSort:@"hot"];
-        }
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //默认请求列表是addtime
     _requestSort = 0;
-    [self requestDataWithSort:@"addtime"];
+    
+//    [self requestDataWithSort:@"addtime"];
    
     [self creatListTable];
     
@@ -159,6 +163,54 @@
     
     //自定义导航条按钮
     [self addCustomNavigationBar];
+    
+    [self refreshHeader];
+}
+#pragma mark ---使用第三方MFRefresh类库
+- (void)refreshHeader {
+    //下拉刷新
+    self.hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewHotData)];
+    self.addTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewAddtimeData)];
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    
+    //上拉加载更多
+    self.hotTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreHotData)];
+    self.addTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreAddtimeData)];
+    
+    // 马上进入刷新状态
+    [self.addTableView.mj_header beginRefreshing];
+    [self.hotTableView.mj_header beginRefreshing];
+    [self.addTableView.mj_footer beginRefreshing];
+    [self.hotTableView.mj_footer beginRefreshing];
+    //默认显示
+    [self loadNewAddtimeData];
+    
+}
+- (void)loadNewAddtimeData {
+    //隐藏上拉
+    self.addTableView.mj_footer.hidden = YES;
+    _startAddtime = 0;
+    [self requestDataWithSort:@"addtime"];
+}
+- (void)loadNewHotData {
+    //隐藏上拉
+    self.addTableView.mj_footer.hidden = YES;
+    _startHot = 0;
+    [self requestDataWithSort:@"hot"];
+}
+- (void)loadMoreAddtimeData {
+    //显示上拉
+    self.addTableView.mj_footer.hidden = NO;
+    _startAddtime += 10;
+    [self requestDataWithSort:@"addtime"];
+}
+- (void)loadMoreHotData {
+    //显示上拉
+    self.addTableView.mj_footer.hidden = NO;
+    _startHot += 10;
+    [self requestDataWithSort:@"hot"];
+    
 }
 
 #pragma mark ----自定义导航条按钮
@@ -186,6 +238,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)HOTAction {
+    [self.hotTableView.mj_header beginRefreshing];
     [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
     [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
     
@@ -203,6 +256,7 @@
     [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
 }
 - (void)NEWAction {
+    [self.addTableView.mj_header beginRefreshing];
     [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
     [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
     CGPoint offset = CGPointMake(0, 0);

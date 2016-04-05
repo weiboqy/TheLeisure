@@ -18,8 +18,12 @@
 @property (assign, nonatomic)NSInteger requestSort; //0 addtime  1 hot
 
 //请求参数
-@property (assign, nonatomic)NSInteger start;
+/**请求开始位置 */
+@property (assign, nonatomic)NSInteger startAddtime;
+@property (assign, nonatomic)NSInteger startHot;
 @property (assign, nonatomic)NSInteger limit;
+@property (assign, nonatomic)BOOL isHot;
+@property (assign, nonatomic)BOOL isAddtime;
 
 /**列表数据源*/
 @property (strong, nonatomic)NSMutableArray *listArr;
@@ -71,7 +75,21 @@
 #pragma mark ---加载数据
 - (void)reloadData:(NSString *)sort {
     _limit = 10;
-    [NetWorkRequesManager requestWithType:POST urlString:TOPICLIST_URL parDic:@{@"sort":sort, @"start":@(_start), @"limit":@(_limit)} finish:^(NSData *data) {
+    NSMutableDictionary *parDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    parDic[@"sort"] = sort;
+    if ([sort isEqualToString:@"hot"]) {
+        parDic[@"start"] = @(_startHot);
+    }else {
+        parDic[@"start"] = @(_startAddtime);
+    }
+    parDic[@"limit"] = @(_limit);
+    [NetWorkRequesManager requestWithType:POST urlString:TOPICLIST_URL parDic:parDic finish:^(NSData *data) {
+        if (_isAddtime == 0) {
+            [self.addtimeListArr removeAllObjects];
+        }
+        if (_isHot == 0) {
+            [self.hotListArr removeAllObjects];
+        }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
 //        QYLog(@"%@", dic);
         
@@ -99,12 +117,17 @@
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_requestSort == 0) {
+                _isAddtime = 1;
                [self.addTableView reloadData];
+                [self.addTableView.mj_header endRefreshing];
+                [self.addTableView.mj_footer endRefreshing];
             }else {
+                _isHot = 1;
                 [self.hotTableView reloadData];
+                [self.hotTableView.mj_header endRefreshing];
+                [self.hotTableView.mj_footer endRefreshing];
             }
-//            [self.addTableView reloadData];
-//            [self.hotTableView reloadData];
+
         });
     } error:^(NSError *error) {
         
@@ -119,7 +142,7 @@
     _requestSort = 0;
     
     //加载数据
-    [self reloadData:@"addtime"];
+//    [self reloadData:@"addtime"];
     
     //创建列表展示
     [self creatListTable];
@@ -127,6 +150,8 @@
     //自定义导航条
     [self addCustomNavigationBar];
     
+    //使用第三方类库 实现刷新功能
+    [self refreshHeader];
     
     // Do any additional setup after loading the view from its nib.
 }
@@ -160,32 +185,52 @@
     [self.rootScrollView addSubview:self.hotTableView];
     [self.view addSubview:self.rootScrollView];
 }
-
-#pragma mark  ----UIScrollViewDelegate
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    int number = (int)(scrollView.contentOffset.x / ScreenWidth);
-//    if (number == 0) {
-//        self.requestSort = 0;
-//        if (self.addtimeListArr.count != 0) {
-//            return;
-//        }
-//        _NEW.selected = YES;
-//        _HOT.selected = NO;
-//        [_NEW setImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
-//        [_HOT setImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
-//        [self reloadData:@"addtime"];
-//    }else if(number == 1){
-//        self.requestSort = 1;
-//        if (self.hotListArr.count != 0) {
-//            return;
-//        }
-//        _HOT.selected = YES;
-//        _NEW.selected = NO;
-//        [_HOT setImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
-//        [_NEW setImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
-//        [self reloadData:@"hot"];
-//    }
-//}
+#pragma mark ---使用第三方MFRefresh类库
+- (void)refreshHeader {
+    //下拉刷新
+    self.hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewHotData)];
+    self.addTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewAddtimeData)];
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadMoreData方法）
+    
+    //上拉加载更多
+    self.hotTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreHotData)];
+    self.addTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreAddtimeData)];
+    
+    // 马上进入刷新状态
+    [self.addTableView.mj_header beginRefreshing];
+    [self.hotTableView.mj_header beginRefreshing];
+    [self.addTableView.mj_footer beginRefreshing];
+    [self.hotTableView.mj_footer beginRefreshing];
+    //默认显示
+    [self loadNewAddtimeData];
+    
+}
+- (void)loadNewAddtimeData {
+    //隐藏上拉
+    self.addTableView.mj_footer.hidden = YES;
+    _startAddtime = 0;
+    [self reloadData:@"addtime"];
+}
+- (void)loadNewHotData {
+    //隐藏上拉
+    self.addTableView.mj_footer.hidden = YES;
+    _startHot = 0;
+    [self reloadData:@"hot"];
+}
+- (void)loadMoreAddtimeData {
+    //显示上拉
+    self.addTableView.mj_footer.hidden = NO;
+    _startAddtime += 10;
+    [self reloadData:@"addtime"];
+}
+- (void)loadMoreHotData {
+    //显示上拉
+    self.addTableView.mj_footer.hidden = NO;
+    _startHot += 10;
+    [self reloadData:@"hot"];
+    
+}
 
 #pragma mark ----自定义导航条按钮
 - (void)addCustomNavigationBar {
