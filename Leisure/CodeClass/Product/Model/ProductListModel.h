@@ -11,13 +11,13 @@
 @interface ProductListModel : BaseModel
 
 /**购买链接*/
-@property (copy, nonatomic)NSString *buyrul;
+@property (copy, nonatomic)NSString *buyurl;
 
 /**图片*/
 @property (copy, nonatomic)NSString *coverimg;
 
 /**标题*/
-@property (copy, nonatomic)NSString *titile;
+@property (copy, nonatomic)NSString *title;
 
 /**产品ID*/
 @property (copy, nonatomic)NSString *contentid;

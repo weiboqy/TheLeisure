@@ -13,12 +13,17 @@
 #import "ProductViewController.h"
 #import "ReadViewController.h"
 #import "TopicViewController.h"
+#import "MenuFootView.h"
+#import "MenuHeaderView.h"
 
 
 @interface MenuViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic)NSMutableArray *menu;
 @property (strong, nonatomic)UITableView *tableView;
+
+@property (strong, nonatomic)MenuHeaderView *headerView;
+@property (strong, nonatomic)MenuFootView *footView;
 @end
 
 @implementation MenuViewController
@@ -28,15 +33,27 @@
      self.menu= [[NSMutableArray alloc]initWithCapacity:0];
     [self.menu addObject:@"阅读"];
     [self.menu addObject:@"电台"];
-    [self.menu addObject:@"良品"];
     [self.menu addObject:@"话题"];
+    [self.menu addObject:@"良品"];
     
-    self.tableView = [[UITableView alloc]initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStylePlain];
+    
+    //创建列表展示
+    [self createListView];
+    // Do any additional setup after loading the view from its nib.
+}
+
+//创建列表
+- (void)createListView {
+    self.headerView = [[MenuHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
+    [self.view addSubview:self.headerView];
+    self.footView = [[MenuFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWidth, 60)];
+    [self.view addSubview:self.footView];
+    
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 150, ScreenWidth, ScreenHeight - 150 - 90) style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
+    self.tableView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.tableView];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -54,10 +71,13 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     cell.textLabel.text = self.menu[indexPath.row];
+    cell.backgroundColor = [UIColor grayColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return  cell;
 }
 
 -  (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     // 获取抽屉对象
     DrawerViewController *menuController = (DrawerViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).drawerVC;
     

@@ -16,7 +16,6 @@
     self.addtime_f.text = [NSString stringWithFormat:@"%@", model.addtime_f];
     self.contentLabel.text = [NSString stringWithFormat:@"%@", model.content];
     self.commentLabel.text = [NSString stringWithFormat:@"%@", model.counterList.comment];
-    self.commentImage.image = [UIImage imageNamed:@"u179"];
 }
 
 - (void)awakeFromNib {

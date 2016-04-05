@@ -19,10 +19,18 @@
     [super viewDidLoad];
     self.titleLabel.text = self.model.title;
     
-    
+    [self addCustomNavigationBar];
     // Do any additional setup after loading the view from its nib.
 }
-
+#pragma mark  ----自定义导航条
+- (void)addCustomNavigationBar {
+    CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
+    [navigationBar.menuBtu addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:navigationBar];
+}
+- (void)back {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

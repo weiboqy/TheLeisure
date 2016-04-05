@@ -13,5 +13,7 @@
 
 /** 阅读主题ID */
 @property (copy, nonatomic)NSString *typeID;
+/** 标题 */
+@property (copy, nonatomic)NSString *name;
 
 @end

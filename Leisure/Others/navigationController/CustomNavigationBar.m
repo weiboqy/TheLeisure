@@ -28,6 +28,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
+    //当前视图边界和边界变化的大小
     [_titleLabel sizeToFit];
 }
 /*

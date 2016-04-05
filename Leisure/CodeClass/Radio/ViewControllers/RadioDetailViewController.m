@@ -20,8 +20,6 @@
 
 /**列表数据源*/
 @property (strong, nonatomic)NSMutableArray *listArr;
-/**头视图图片数据源*/
-@property (strong, nonatomic)NSMutableArray *headerArr;
 
 /**列表*/
 @property (strong, nonatomic)UITableView *tableView;
@@ -38,23 +36,16 @@
     }
     return _listArr;
 }
-- (NSMutableArray *)headerArr {
-    if (_headerArr == nil) {
-        _headerArr = [[NSMutableArray alloc]initWithCapacity:0];
-    }
-    return _headerArr;
-}
 
+#pragma mark   ----数据加载
 - (void)reloadData{
     [NetWorkRequesManager requestWithType:POST urlString:RADIODETAILLIST_URL parDic:@{@"radioid" : _radioid} finish:^(NSData *data) {
         NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingMutableContainers) error:nil];
-        QYLog(@"===%@", dataDic);
         //获取列表信息
         for (NSDictionary *listDic in dataDic[@"data"][@"list"]) {
             RadioDetailListModel *listModel = [[RadioDetailListModel alloc] init];
             [listModel setValuesForKeysWithDictionary:listDic];
             [self.listArr addObject:listModel];
-            QYLog(@"%@", self.listArr);
         };
         
         //获取头视图信息
@@ -65,13 +56,15 @@
         NSDictionary *userDic = headDict[@"userinfo"];
         [userModel setValuesForKeysWithDictionary:userDic];
         model.userInfoModel = userModel;
-        QYLog(@"==== %@, uname = %@", model.desc, userModel.uname);
+        
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             //给头视图内部控件赋值
             self.headerView.model = model;
             //刷新tableview
             [self.tableView reloadData];
-            
+            //刷新NavigationBar标题
+            [self addCustomNavigationBar];
         });
         
     } error:^(NSError *error) {
@@ -86,7 +79,6 @@
     [self reloadData];
     
     //已导航条左下角为原点
-    
     self.navigationController.navigationBar.translucent = YES;
     
     //创建视图列表
@@ -101,19 +93,19 @@
     CustomNavigationBar *bar = [[CustomNavigationBar alloc] initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
     [bar.menuBtu addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     bar.titleLabel.text = _headerView.model.title;
-    
     [self.view addSubview:bar];
 }
 - (void)back {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+//创建视图列表
 - (void)creatListView {
     //初始化头视图
     self.headerView = [[RadioDetailHeader alloc]init];
-    self.headerView.frame = CGRectMake(0, 0, ScreenWidth, 260);
+    self.headerView.frame = CGRectMake(0, 44, ScreenWidth, 260);
     
-    self.tableView  = [[UITableView alloc]initWithFrame:[[UIScreen mainScreen]bounds] style:UITableViewStylePlain];
+    self.tableView  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, ScreenWidth, ScreenHeight - 44) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tableHeaderView = self.headerView;

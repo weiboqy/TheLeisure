@@ -85,6 +85,7 @@
     
     // 在根视图导航栏上添加左按钮
     if (canShowLeft) {
+        //系统自带的NAvigationController隐藏
         [topController.navigationController setNavigationBarHidden:YES];
         if (![@"TopicViewController" isEqualToString:NSStringFromClass([topController class])]) {
             CustomNavigationBar *bar = [[CustomNavigationBar alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, 44)];

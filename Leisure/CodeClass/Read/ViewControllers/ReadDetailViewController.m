@@ -32,7 +32,10 @@
 @property (strong, nonatomic)UITableView *addTableView;
 @property (strong, nonatomic)UITableView *hotTableView;
 
-@property (strong, nonatomic)UISegmentedControl *segment;
+
+/**导航条按钮*/
+@property (strong, nonatomic)UIButton *NEW;
+@property (strong, nonatomic)UIButton *HOT;
 
 @end
 
@@ -54,7 +57,7 @@
 - (void)requestDataWithSort:(NSString *)sort {
     [NetWorkRequesManager requestWithType:POST urlString:READDETAILLIST_URL parDic:@{@"sort" : sort, @"start" : @(_start), @"limit" : @(_limit), @"typeid" : _typeID} finish:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
-        
+        QYLog(@"%@", dic);
         //获取详情列表里的数据源
         for (NSDictionary *listDic in dic[@"data"][@"list"]) {
             ReadDetailModel *detailModel = [[ReadDetailModel alloc] init];
@@ -72,11 +75,13 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.requestSort == 0) {
                 [self.addTableView reloadData];
-                [self.hotTableView reloadData];
-            }else {
+                
+            }
+            if (self.requestSort == 1) {
                 [self.hotTableView reloadData];
                 
             }
+//            [self addCustomNavigationBar];
         });
     } error:^(NSError *error) {
         
@@ -86,22 +91,25 @@
 
 - (void)creatListTable {
 //    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.rootScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 40, ScreenWidth, ScreenHeight - 80)];
-    self.rootScrollView.contentSize = CGSizeMake(ScreenWidth * 2, ScreenHeight);
+    self.rootScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 44, ScreenWidth, ScreenHeight - 44)];
+    self.rootScrollView.contentSize = CGSizeMake(ScreenWidth * 2, 0);
     self.rootScrollView.contentOffset = CGPointMake(0, 0);
     self.rootScrollView.delegate = self;
     self.rootScrollView.pagingEnabled = YES;
     self.rootScrollView.bounces = NO;
-    self.rootScrollView.showsVerticalScrollIndicator = NO;
+    self.rootScrollView.showsHorizontalScrollIndicator = NO;
     
-    self.addTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    //最新列表
+    self.addTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 10, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
     self.addTableView.delegate = self;
     self.addTableView.dataSource = self;
     
-    self.hotTableView = [[UITableView alloc]initWithFrame:CGRectMake(ScreenWidth, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    //热门列表
+    self.hotTableView = [[UITableView alloc]initWithFrame:CGRectMake(ScreenWidth, 10, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
     self.hotTableView.delegate = self;
     self.hotTableView.dataSource = self;
     
+    //注册cell
     [self.addTableView registerNib:[UINib nibWithNibName:@"ReadDetailListModelCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([ReadDetailModel class])];
     [self.hotTableView registerNib:[UINib nibWithNibName:@"ReadDetailListModelCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([ReadDetailModel class])];
     
@@ -110,41 +118,30 @@
     [self.view addSubview:self.rootScrollView];
 }
 
-- (void)segmentValueChanged:(id)sender {
-    UISegmentedControl *segment = sender;
-    CGPoint offset = CGPointMake(segment.selectedSegmentIndex * 2 * ScreenWidth, 0);
-    self.rootScrollView.contentOffset = offset;
-    if (segment.selectedSegmentIndex == 0) {
-        self.requestSort = 0;
-        if (self.addtimeListArr.count != 0) {
-            return;
-        }
-        [self requestDataWithSort:@"addtime"];
-    }else {
-        self.requestSort = 1;
-        if (self.hotListArr.count != 0) {
-            return;
-        }
-        [self requestDataWithSort:@"hot"];
-    }
-}
-
 #pragma mark  ----UIScrollViewDelegate 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
         int number = (int)(scrollView.contentOffset.x / ScreenWidth);
         if (number == 0) {
+            //修改按钮的背景色
+            [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
+            [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
             self.requestSort = 0;
             if (self.addtimeListArr.count != 0) {
                 return;
             }
-            self.segment.selectedSegmentIndex = 0;
+            _NEW.selected = YES;
+            _HOT.selected = NO;
             [self requestDataWithSort:@"addtime"];
         }else if(number == 1){
+            //修改按钮的背景色
+            [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
+            [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
             self.requestSort = 1;
             if (self.hotListArr.count != 0) {
                 return;
             }
-            self.segment.selectedSegmentIndex = 1;
+            _HOT.selected = YES;
+            _NEW.selected = NO;
             [self requestDataWithSort:@"hot"];
         }
 }
@@ -152,21 +149,72 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _requestSort = 0;
-    
     [self requestDataWithSort:@"addtime"];
    
     [self creatListTable];
     
-    self.segment = [[UISegmentedControl alloc]initWithItems:@[@"最新", @"热门"]];
-    self.segment.frame = CGRectMake(ScreenWidth / 2 -80, 0, 150, 30);
-    self.segment.selectedSegmentIndex = 0;
-    [self.segment addTarget:self action:@selector(segmentValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.segment];
-    
     //以导航条左下角为原点
     self.navigationController.navigationBar.translucent = NO;
+    
+    //自定义导航条按钮
+    [self addCustomNavigationBar];
+}
+
+#pragma mark ----自定义导航条按钮
+- (void)addCustomNavigationBar {
+    CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
+    [navigationBar.menuBtu addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    navigationBar.titleLabel.text = _name;
+    
+    _NEW= [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth - 90, 14, 15, 30)];
+    _NEW.tag = 110;
+    _NEW.selected = YES;
+    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
+    [_NEW addTarget:self action:@selector(NEWAction) forControlEvents:(UIControlEventTouchUpInside)];
+    [navigationBar addSubview:_NEW];
+    
+    _HOT = [[UIButton alloc] initWithFrame:CGRectMake(_NEW.frame.size.width + _NEW.frame.origin.x + 30, _NEW.frame.origin.y, _NEW.frame.size.width, _NEW.frame.size.height)];
+    _HOT.tag = 111;
+    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
+    [_HOT addTarget:self action:@selector(HOTAction) forControlEvents:(UIControlEventTouchUpInside)];
+    [navigationBar addSubview:_HOT];
+    [self.view addSubview:navigationBar];
+    
+}
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)HOTAction {
+    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
+    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
+    
+    CGPoint offset = CGPointMake(ScreenWidth, 0);
+    self.rootScrollView.contentOffset = offset;
+    self.requestSort = 1;
+    _HOT.selected = YES;
+    _NEW.selected = NO;
+    if (self.hotListArr.count != 0) {
+        return;
+    }
+    [self requestDataWithSort:@"hot"];
+    
+    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
+    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
+}
+- (void)NEWAction {
+    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
+    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
+    CGPoint offset = CGPointMake(0, 0);
+    self.rootScrollView.contentOffset = offset;
+    self.requestSort = 0;
+    _HOT.selected = NO;
+    _NEW.selected = YES;
+    if (self.addtimeListArr.count != 0) {
+        return;
+    }
+    [self requestDataWithSort:@"addtime"];
+    
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -175,11 +175,11 @@
 }
 
 //点击item的方法
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"1111");
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ReadDetailViewController *detailVC = [[ReadDetailViewController alloc]init];
     ReadListModel *model = self.readListArr[indexPath.row];
     detailVC.typeID = model.type;
+    detailVC.name = model.name;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 //表视图 、 尾视图

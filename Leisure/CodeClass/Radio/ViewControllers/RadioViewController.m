@@ -10,11 +10,10 @@
 #import "RadioListModel.h"
 #import "RadioCarouseModel.h"
 #import "RadioDetailViewController.h"
-#import <SDCycleScrollView.h>
 #import "RadioHeader.h"
 #import "RadioTableViewCell.h"
 #import "RadioCollectionViewCell.h"
-#import <UIButton+WebCache.h>
+
 
 
 @interface RadioViewController ()<SDCycleScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -158,8 +157,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor cyanColor];
-    
+
     //首次请求 列表数据
     [self requestFirstData];
     //上拉刷新数据
@@ -175,8 +173,8 @@
 
 - (void)creatListView {
     // 初始化headView
-    _header = [[RadioHeader alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 300)];
-    self.tableView = [[UITableView alloc]initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStylePlain];
+    _header = [[RadioHeader alloc] initWithFrame:CGRectMake(0, 44, ScreenWidth, 300)];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, ScreenWidth, ScreenHeight - 44) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"RadioTableViewCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([RadioTableViewCell class])];
