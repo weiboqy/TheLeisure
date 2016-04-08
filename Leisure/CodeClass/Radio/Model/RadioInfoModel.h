@@ -18,6 +18,7 @@
 @property (copy, nonatomic)NSString *desc;
 /** 标题 */
 @property (copy, nonatomic)NSString *title;
+
 /** 用户信息 */
 @property (strong, nonatomic)RadioUserInfoModel *userInfoModel;
 @end

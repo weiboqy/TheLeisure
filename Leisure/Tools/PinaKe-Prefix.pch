@@ -26,6 +26,8 @@
 #import <UIButton+WebCache.h>
 #import "UIImageView+WebCache.h"
 #import <MJRefresh/MJRefresh.h>
+#import "PlayerManager.h"
+#import <SVProgressHUD.h>
 
 
 #ifdef DEBUG

@@ -15,7 +15,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *musicVisitLabel;
 @property (strong, nonatomic) IBOutlet UIButton *actionButton;
+
 @property (strong, nonatomic)RadioDetailListModel *model;
+
 
 - (void)setDataWithModel:(RadioDetailListModel *)model ;
 

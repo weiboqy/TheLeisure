@@ -7,6 +7,7 @@
 //
 
 #import "RadioDetailTableViewCell.h"
+#import "PlayerManager.h"
 
 @implementation RadioDetailTableViewCell
 
@@ -14,10 +15,9 @@
     [self.coverimgImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", model.coverimg]] placeholderImage:PLACEHOLDERIMAGE];
     self.nameLabel.text = [NSString stringWithFormat:@"%@", model.title];
     self.musicVisitLabel.text = [NSString stringWithFormat:@"%@", model.musicVisit];
-//    [self.actionButton setImage:[UIImage imageNamed:@"u49"] forState:UIControlStateNormal];
-    [self.actionButton setBackgroundImage:[UIImage imageNamed:@"u47"] forState:UIControlStateNormal];
-    [self.actionButton setBackgroundImage:[UIImage imageNamed:@"u22"] forState:UIControlStateHighlighted];
+
 }
+
 
 - (void)awakeFromNib {
     // Initialization code

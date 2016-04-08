@@ -11,4 +11,7 @@
 
 @interface ProductInfoViewController : BaseViewController
 
+/**产品ID*/
+@property (copy, nonatomic)NSString *contentid;
+
 @end

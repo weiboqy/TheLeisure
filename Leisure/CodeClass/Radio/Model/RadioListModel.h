@@ -22,6 +22,10 @@
 @property (copy, nonatomic)NSString *radioid;
 /**标题*/
 @property (copy, nonatomic)NSString *title;
+/** 总数 */
+@property (assign, nonatomic)NSInteger total;
+/** 首次次数 */
+@property (copy, nonatomic)NSString *musicVisit;
 /**用户信息*/
 @property (strong, nonatomic)RadioUserInfoModel *userinfo;
 

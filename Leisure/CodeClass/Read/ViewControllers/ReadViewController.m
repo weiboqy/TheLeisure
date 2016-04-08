@@ -62,6 +62,9 @@
 
 #pragma mark ---加载数据
 - (void)parseLoad {
+    //添加指示器
+    [SVProgressHUD show];
+    
     [NetWorkRequesManager requestWithType:GET urlString:READLIST_URL parDic:nil finish:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
         //列表数据
@@ -90,9 +93,12 @@
             //创建滚动列表视图
             [self creatScrollView];
         });
-        
+        //请求结束 关闭指示器
+        [SVProgressHUD dismiss];
     } error:^(NSError *error) {
-        NSLog(@"error = %@", error);
+        QYLog(@"error = %@", error);
+        //请求失败
+        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 

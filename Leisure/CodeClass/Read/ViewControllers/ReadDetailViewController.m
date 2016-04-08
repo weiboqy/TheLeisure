@@ -60,6 +60,9 @@
 }
 
 - (void)requestDataWithSort:(NSString *)sort {
+    //添加指示器
+    [SVProgressHUD show];
+    
     NSMutableDictionary *parDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     parDic[@"sort"] = sort;
     if ([sort isEqualToString:@"hot"]) {
@@ -110,11 +113,13 @@
                 [self.addTableView.mj_header endRefreshing];
                 [self.addTableView.mj_footer endRefreshing];
             }
-            
+            //请求结束 关闭指示器
+            [SVProgressHUD dismiss];
             
         });
     } error:^(NSError *error) {
-        
+        //请求失败
+        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 
@@ -166,7 +171,7 @@
     
     [self refreshHeader];
 }
-#pragma mark ---使用第三方MFRefresh类库
+#pragma mark ---使用第三方MJRefresh类库
 - (void)refreshHeader {
     //下拉刷新
     self.hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewHotData)];

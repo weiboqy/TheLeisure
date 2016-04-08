@@ -22,4 +22,7 @@
 /**产品ID*/
 @property (copy, nonatomic)NSString *contentid;
 
+/** 产品总数 */
+@property (assign ,nonatomic)NSNumber *total;
+
 @end

@@ -25,8 +25,9 @@
 #define RADIOLIST_URL          @"http://api2.pianke.me/ting/radio"  // 电台列表
 #define RADIOLISTMORE_URL      @"http://api2.pianke.me/ting/radio_list" // 上拉电台列表
 #define RADIODETAILLIST_URL    @"http://api2.pianke.me/ting/radio_detail" // 电台详细列表
-#define RADIODETAILMORE_URL    @"http://api2.pianke.me/ting/radio_detail_list "
+#define RADIODETAILMORE_URL    @"http://api2.pianke.me/ting/radio_detail_list"
 
+#define RADIOPLAYERINFO_URL    @"http://api2.pianke.me/ting/info" //电台用户数据
 //  良品模块
 #define SHOPLIST_URL           @"http://api2.pianke.me/pub/shop"  // 良品列表
 

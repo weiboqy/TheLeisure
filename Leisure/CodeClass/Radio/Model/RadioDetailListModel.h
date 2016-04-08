@@ -7,6 +7,7 @@
 //
 
 #import "BaseModel.h"
+#import "RadioPlayInfo.h"
 
 @interface RadioDetailListModel : BaseModel
 
@@ -18,6 +19,11 @@
 @property (copy, nonatomic)NSString *musicUrl;
 /** 图片 */
 @property (copy, nonatomic)NSString *coverimg;
+/** 总数 */
+@property (assign, nonatomic)NSInteger total;
+
+
+@property (strong, nonatomic)RadioPlayInfo *playInfo;// 播放列表模型
 
 
 @end

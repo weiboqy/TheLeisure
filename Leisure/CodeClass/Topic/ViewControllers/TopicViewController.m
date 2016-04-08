@@ -74,6 +74,9 @@
 
 #pragma mark ---加载数据
 - (void)reloadData:(NSString *)sort {
+    //添加指示器
+    [SVProgressHUD show];
+    
     _limit = 10;
     NSMutableDictionary *parDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     parDic[@"sort"] = sort;
@@ -127,10 +130,12 @@
                 [self.hotTableView.mj_header endRefreshing];
                 [self.hotTableView.mj_footer endRefreshing];
             }
-
         });
+        //请求结束 关闭指示器
+        [SVProgressHUD dismiss];
     } error:^(NSError *error) {
-        
+        //请求失败
+        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 
@@ -185,7 +190,7 @@
     [self.rootScrollView addSubview:self.hotTableView];
     [self.view addSubview:self.rootScrollView];
 }
-#pragma mark ---使用第三方MFRefresh类库
+#pragma mark ---使用第三方MJRefresh类库
 - (void)refreshHeader {
     //下拉刷新
     self.hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewHotData)];

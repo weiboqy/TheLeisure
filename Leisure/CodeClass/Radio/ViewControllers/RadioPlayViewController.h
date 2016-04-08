@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "RadioPlayInfo.h"
+#import "RadioDetailListModel.h"
 
 @interface RadioPlayViewController : BaseViewController
 
+@property (strong, nonatomic)NSMutableArray *playListArr;  //传入模型数组
+@property (assign, nonatomic)NSInteger seleteIndex;  //传入位置信息
 @end

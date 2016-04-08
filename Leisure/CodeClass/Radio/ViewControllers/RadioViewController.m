@@ -12,7 +12,7 @@
 #import "RadioDetailViewController.h"
 #import "RadioHeader.h"
 #import "RadioTableViewCell.h"
-#import "RadioCollectionViewCell.h"
+
 
 
 
@@ -34,10 +34,11 @@
 /**limit*/
 @property (assign, nonatomic)NSInteger limit;
 
+
 /** 列表展示 */
 @property (strong, nonatomic)UITableView *tableView;
 @property (strong, nonatomic)RadioHeader *header;
-@property (strong, nonatomic)UICollectionView *collection;
+
 
 
 @end
@@ -72,16 +73,30 @@
     return _imageArr;
 }
 //首次请求
-- (void)requestFirstData {
-    [NetWorkRequesManager requestWithType:POST urlString:RADIOLIST_URL parDic:@{} finish:^(NSData *data) {
+- (void)requestNewData {
+    //添加指示器
+    [SVProgressHUD show];
+    
+    NSMutableDictionary *parDic = [NSMutableDictionary dictionary];
+    parDic[@"client"] = @"1";
+    parDic[@"deviceid"] = @"63A94D37-33F9-40FF-9EBB-481182338873";
+    parDic[@"auth"] = @"";
+    
+    [NetWorkRequesManager requestWithType:POST urlString:RADIOLIST_URL parDic:parDic finish:^(NSData *data) {
+        if (data == nil) {
+            return ;
+        }else {
+            [self.carouselArr removeAllObjects];
+            [self.hotArr removeAllObjects];
+            [self.listArr removeAllObjects];
+        }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves | NSJSONReadingMutableContainers error:nil];
-//           QYLog(@"%@", dic);
+           QYLog(@"%@", dic);
         
         //获取所以电台列表信息
-        for (NSDictionary *listDic in dic[@"data"][@"allList"]) {
+        for (NSDictionary *listDic in dic[@"data"][@"alllist"]) {
             RadioListModel *listModel = [[RadioListModel alloc]init];
             RadioUserInfoModel *userInfoModel = [[RadioUserInfoModel alloc]init];
-            
             [listModel setValuesForKeysWithDictionary:listDic];
             [userInfoModel setValuesForKeysWithDictionary:listDic[@"userinfo"]];
             [self.imageArr addObject:listModel.coverimg];
@@ -96,7 +111,6 @@
             RadioCarouseModel *carouseModel = [[RadioCarouseModel alloc]init];
             [carouseModel setValuesForKeysWithDictionary:carouselDic];
             [self.imageArr addObject:carouseModel.img];
-            QYLog(@"%@", carouseModel.img);
             [self.carouselArr addObject:carouseModel];
         }
         
@@ -114,44 +128,75 @@
         
         //回到主线程 刷新数据 操作UI视图
         dispatch_async(dispatch_get_main_queue(), ^{
+            //刷新tableview
             [self.tableView reloadData];
-            [self.collection reloadData];
+            //创建滚动视图
             [self creatScrollViewView];
+            //创建热门视图
             [self setupHeadViewBtnByBackGroundImage];
+            
+            //结束刷新
+            [self.tableView.mj_header endRefreshing];
+            //显示上拉刷新
+            self.tableView.mj_footer.hidden = NO;
         });
         
+        //请求结束 关闭指示器
+        [SVProgressHUD dismiss];
+      
     } error:^(NSError *error) {
-        
+        //请求失败
+        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 
 //上拉刷新请求
-- (void)requestRefresh {
-    [NetWorkRequesManager requestWithType:POST urlString:RADIOLISTMORE_URL parDic:@{@"start" : @(_start), @"limit" : @(_limit)} finish:^(NSData *data) {
+- (void)requestMoreData {
+    _start += 10;
+    //添加指示器
+    [SVProgressHUD show];
+    NSMutableDictionary *parDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+    parDic[@"auth"] = @"XZU7RH7m1861DC828H8HvkTJxQmGoPLG09zo4XDA9cWP22NdfSh9d7fo";
+    parDic[@"limit"] = @(_limit);
+    parDic[@"start"] = @(_start);
+    parDic[@"version"] = @"3.0.6";
+    [NetWorkRequesManager requestWithType:POST urlString:RADIOLISTMORE_URL parDic:parDic finish:^(NSData *data) {
+        if (_start == 0) {
+            [self.listArr removeAllObjects];
+        }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
-        
+     
         for (NSDictionary *refreshDic in dic[@"data"][@"list"]) {
             RadioListModel *listModel = [[RadioListModel alloc]init];
             RadioUserInfoModel *userInfoModel = [[RadioUserInfoModel alloc]init];
-            
             [listModel setValuesForKeysWithDictionary:refreshDic];
             [userInfoModel setValuesForKeysWithDictionary:refreshDic[@"userinfo"]];
             
             listModel.userinfo = userInfoModel;
+            listModel.total = [dic[@"data"][@"total"] integerValue];
             
             [self.listArr addObject:listModel];
+            
         }
         
         
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
-          
+            RadioListModel *model = self.listArr[self.listArr.count - 1];
+            
+            if (model.total == self.listArr.count) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }else{
+               [self.tableView.mj_footer endRefreshing];
+            }
+            
             [self.tableView reloadData];
-            [self.collection reloadData];
         });
-        
+        //请求结束 关闭指示器
+        [SVProgressHUD dismiss];
     } error:^(NSError *error) {
-        
+        //请求失败
+        [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
     }];
 }
 
@@ -159,15 +204,17 @@
     [super viewDidLoad];
 
     //首次请求 列表数据
-    [self requestFirstData];
-    //上拉刷新数据
-    [self requestRefresh];
+//    [self requestFirstData];  启用第三方
+
+    [self requestNewData];
     
-    //展示列表
+    
     [self creatListView];
     
     self.navigationController.navigationBar.translucent = NO;
 }
+#pragma mark ---使用第三方MJRefresh类库
+
 
 #pragma  mark  ---创建列表显示
 
@@ -180,6 +227,13 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"RadioTableViewCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([RadioTableViewCell class])];
     self.tableView.tableHeaderView = _header;
     [self.view addSubview:self.tableView];
+    
+    //使用第三方MJRefresh实现刷新功能
+    //下拉刷新
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestNewData)];
+    //上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestMoreData)];
+    
     [self creatScrollViewView];
 }
 #pragma mark -tableView的headview中的按钮实现
