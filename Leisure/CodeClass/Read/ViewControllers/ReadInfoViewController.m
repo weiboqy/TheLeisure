@@ -129,6 +129,9 @@
     [self.view addSubview:bar];
 }
 - (void)back {
+    //收藏页面的返回
+    [self dismissViewControllerAnimated:NO completion:nil];
+    //返回上一级
     [self.navigationController popViewControllerAnimated:YES];
 }
 //评论功能的实现

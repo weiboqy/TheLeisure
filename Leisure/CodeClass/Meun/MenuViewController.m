@@ -130,30 +130,21 @@
     // 获取抽屉对象
     DrawerViewController *menuController = (DrawerViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).drawerVC;
     
-    if (indexPath.row == 0) { // 设置阅读为抽屉的根视图
-
-        ReadViewController *readVC = [[ReadViewController alloc]init];
-        UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:readVC];
-        [menuController setNavController:naVC animated:YES];
+    if (indexPath.row == 0) {
+        // 设置阅读为抽屉的根视图
+        [self setRootViewController:[[ReadViewController alloc] init] menuController:menuController];
         
-    } else if (indexPath.row == 1) { // 设置电台为抽屉的根视图
-
-        RadioViewController *radioVC = [[RadioViewController alloc]init];
-        UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:radioVC];
-        [menuController setNavController:naVC animated:YES];
+    } else if (indexPath.row == 1) {
+        // 设置电台为抽屉的根视图
+        [self setRootViewController:[[RadioViewController alloc] init] menuController:menuController];
         
-    } else if (indexPath.row == 2) { // 设置话题为抽屉的根视图
-
-        TopicViewController *topicVC = [[TopicViewController alloc]init];
-        UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:topicVC];
-        [menuController setNavController:naVC animated:YES];
+    } else if (indexPath.row == 2) {
+        // 设置话题为抽屉的根视图
+        [self setRootViewController:[[TopicViewController alloc] init] menuController:menuController];
         
-    } else if (indexPath.row == 3) { // 设置良品为抽屉的根视图
-
-        ProductViewController *productVC = [[ProductViewController alloc]init];
-        UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:productVC];
-        [menuController setNavController:naVC animated:YES];
-        
+    } else if (indexPath.row == 3) {
+        // 设置良品为抽屉的根视图
+        [self setRootViewController:[[ProductViewController alloc] init] menuController:menuController];
     }
 }
 //封装

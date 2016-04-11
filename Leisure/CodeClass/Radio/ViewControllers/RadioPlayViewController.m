@@ -38,10 +38,10 @@
 
 @implementation RadioPlayViewController
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    [self.tableView reloadData];
-//}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
 
 - (NSMutableArray *)playListArr {
     if (_playListArr == nil) {
@@ -102,6 +102,7 @@
     NSTimer *timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(playing) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     
+    //进度条添加方法
     [_coverView.sliderView addTarget:self action:@selector(changeValue:) forControlEvents:UIControlEventValueChanged];
     
 }
@@ -109,6 +110,13 @@
 - (void)changeValue:(id)sender{
     PlayerManager *manager = [PlayerManager defaultManager];
     [manager seekToNewTime:_coverView.sliderView.value];
+    //立即播放
+    [manager play];
+    if (_coverView.sliderView.value == manager.totalTime) {
+       dispatch_async(dispatch_get_main_queue(), ^{
+           [self refreshUIWithIndex:manager.playIndex];
+       });
+    }
 }
 
 - (void)playFinish:(NSNotification *)notification {
@@ -124,7 +132,7 @@
     
     //剩余时间显示
     _coverView.timeLabel.text = [NSString stringWithFormat:@"%02lld:%02lld", (int64_t)(manager.totalTime - manager.currentTime) / 60, (int64_t)(manager.totalTime - manager.currentTime) % 60];
-    //如果当前播放时间雨总时长相等，就调用播放结束的方法
+    //如果当前播放时间与总时长相等，就调用播放结束的方法
     if (manager.currentTime == manager.totalTime && manager.totalTime != 0) {
         [manager playerDidFinish];
     }
@@ -177,6 +185,7 @@
     //显示第一页的tableview
     [self createTableView];
     
+    //封面
     [self createCoverView];
 }
 
@@ -195,8 +204,10 @@
     [self.rootScrollView addSubview:self.tableView];
 }
 
+
+//封面
 - (void)createCoverView {
-    QYLog(@"----你妹");
+
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([RadioCover class]) owner:nil options:nil];
     _coverView = [views lastObject];
     _coverView.backgroundColor = [UIColor clearColor];
@@ -205,10 +216,7 @@
     [_coverView setListModel:_playListArr[_seleteIndex]];
     [_rootScrollView addSubview:_coverView];
 }
-- (void)createUser {
-    _controlView = [[RadioPlayControlView alloc ] initWithFrame:CGRectMake(3 *ScreenWidth, 200, ScreenWidth, 500)];
-    [_rootScrollView addSubview:_controlView];
-}
+
 #pragma mark  ----自定义导航条
 - (void)addCustomNavigationBar {
     CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
@@ -271,6 +279,8 @@
     }
     
 }
+
+
 #pragma mark  ------detail展示
 - (void)createDetailView {
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(2 * ScreenWidth, 0, ScreenWidth, ScreenHeight - 64 - 64)];
@@ -339,6 +349,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 

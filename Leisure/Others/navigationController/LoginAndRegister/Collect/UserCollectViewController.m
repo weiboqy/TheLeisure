@@ -75,7 +75,8 @@
     ReadInfoViewController *infoVC = [[ReadInfoViewController alloc]init];
     infoVC.contentid = model.contentID;
     infoVC.detailModel = model;
-    [self.navigationController pushViewController:infoVC animated:YES];
+    QYLog(@"点击到了");
+    [self presentViewController:infoVC animated:NO completion:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
