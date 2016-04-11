@@ -15,6 +15,7 @@
 /** html */
 @property (copy, nonatomic)NSString *html;
 /** 标题 */
+
 @property (copy, nonatomic)NSString *title;
 
 @end
