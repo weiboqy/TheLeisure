@@ -38,6 +38,11 @@
 
 @implementation RadioPlayViewController
 
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    [self.tableView reloadData];
+//}
+
 - (NSMutableArray *)playListArr {
     if (_playListArr == nil) {
         _playListArr = [[NSMutableArray alloc]initWithCapacity:0];
@@ -68,7 +73,7 @@
     //创建详情列表
     [self createDetailView];
     
-    [self createUser];
+//    [self createUser];
     
     //监听全局的播放过程，如果结束就执行方法
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playFinish:) name:@"playFinish" object:nil];
@@ -100,6 +105,12 @@
     [_coverView.sliderView addTarget:self action:@selector(changeValue:) forControlEvents:UIControlEventValueChanged];
     
 }
+//进度条  更改显示 刷新
+- (void)changeValue:(id)sender{
+    PlayerManager *manager = [PlayerManager defaultManager];
+    [manager seekToNewTime:_coverView.sliderView.value];
+}
+
 - (void)playFinish:(NSNotification *)notification {
     QYLog(@"%@", notification.name);
     [self refreshUIWithIndex:[PlayerManager defaultManager].playIndex];
@@ -123,7 +134,7 @@
 //    self.automaticallyAdjustsScrollViewInsets = YES;
     //根视图
     _rootScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, ScreenWidth, ScreenHeight - 128)];
-    _rootScrollView.contentSize = CGSizeMake(4 * ScreenWidth, 0);
+    _rootScrollView.contentSize = CGSizeMake(3 * ScreenWidth, 0);
     _rootScrollView.contentOffset = CGPointMake(ScreenWidth, 0);
     _rootScrollView.pagingEnabled = YES;
     _rootScrollView.bounces = YES;
@@ -179,7 +190,7 @@
     
     //默认选中位置
     QYLog(@"seleteIndex = %ld", _seleteIndex);
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:[PlayerManager defaultManager].playIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:_seleteIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
     [self.rootScrollView addSubview:self.tableView];
 }
@@ -187,8 +198,8 @@
 - (void)createCoverView {
     QYLog(@"----你妹");
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([RadioCover class]) owner:nil options:nil];
-    _coverView.backgroundColor = [UIColor clearColor];
     _coverView = [views lastObject];
+    _coverView.backgroundColor = [UIColor clearColor];
     
     _coverView.frame = CGRectMake(ScreenWidth, 0, ScreenWidth, ScreenHeight  - 64);
     [_coverView setListModel:_playListArr[_seleteIndex]];
@@ -221,11 +232,7 @@
 }
 
 
-//进度条  更改显示 刷新
-- (void)changeValue:(id)sender{
-    PlayerManager *manager = [PlayerManager defaultManager];
-    [manager seekToNewTime:_coverView.sliderView.value];
-}
+
 
 #pragma mark  ----上一首、暂停/播放、下一首
 - (void)aboveClick:(id)sender {

@@ -87,10 +87,10 @@
     }
     parDic[@"limit"] = @(_limit);
     [NetWorkRequesManager requestWithType:POST urlString:TOPICLIST_URL parDic:parDic finish:^(NSData *data) {
-        if (_isAddtime == 0) {
+        if (_startAddtime == 0) {
             [self.addtimeListArr removeAllObjects];
         }
-        if (_isHot == 0) {
+        if (_startHot == 0) {
             [self.hotListArr removeAllObjects];
         }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
@@ -120,12 +120,12 @@
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_requestSort == 0) {
-                _isAddtime = 1;
+               
                [self.addTableView reloadData];
                 [self.addTableView.mj_header endRefreshing];
                 [self.addTableView.mj_footer endRefreshing];
             }else {
-                _isHot = 1;
+               
                 [self.hotTableView reloadData];
                 [self.hotTableView.mj_header endRefreshing];
                 [self.hotTableView.mj_footer endRefreshing];
@@ -148,6 +148,8 @@
     
     //加载数据
 //    [self reloadData:@"addtime"];
+    //默认显示
+    [self loadNewAddtimeData];
     
     //创建列表展示
     [self creatListTable];
@@ -155,8 +157,7 @@
     //自定义导航条
     [self addCustomNavigationBar];
     
-    //使用第三方类库 实现刷新功能
-    [self refreshHeader];
+    
     
     // Do any additional setup after loading the view from its nib.
 }
@@ -188,10 +189,7 @@
     
     [self.rootScrollView addSubview:self.addTableView];
     [self.rootScrollView addSubview:self.hotTableView];
-    [self.view addSubview:self.rootScrollView];
-}
 #pragma mark ---使用第三方MJRefresh类库
-- (void)refreshHeader {
     //下拉刷新
     self.hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewHotData)];
     self.addTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewAddtimeData)];
@@ -202,36 +200,27 @@
     self.hotTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreHotData)];
     self.addTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreAddtimeData)];
     
-    // 马上进入刷新状态
-    [self.addTableView.mj_header beginRefreshing];
-    [self.hotTableView.mj_header beginRefreshing];
-    [self.addTableView.mj_footer beginRefreshing];
-    [self.hotTableView.mj_footer beginRefreshing];
-    //默认显示
-    [self loadNewAddtimeData];
-    
+    [self.view addSubview:self.rootScrollView];
 }
+
+
 - (void)loadNewAddtimeData {
-    //隐藏上拉
-    self.addTableView.mj_footer.hidden = YES;
+    
     _startAddtime = 0;
     [self reloadData:@"addtime"];
 }
 - (void)loadNewHotData {
-    //隐藏上拉
-    self.addTableView.mj_footer.hidden = YES;
+    
     _startHot = 0;
     [self reloadData:@"hot"];
 }
 - (void)loadMoreAddtimeData {
-    //显示上拉
-    self.addTableView.mj_footer.hidden = NO;
+    
     _startAddtime += 10;
     [self reloadData:@"addtime"];
 }
 - (void)loadMoreHotData {
-    //显示上拉
-    self.addTableView.mj_footer.hidden = NO;
+    
     _startHot += 10;
     [self reloadData:@"hot"];
     
@@ -340,7 +329,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TopicInfoViewController *infoVC = [[TopicInfoViewController alloc]init];
-    
+    if (_requestSort == 0) {
+        TopicListModel *model = self.addtimeListArr[indexPath.row];
+        infoVC.contentid = model.contentid;
+    }else {
+        TopicListModel *model = self.hotListArr[indexPath.row];
+        infoVC.contentid = model.contentid;
+    }
+    infoVC.selecteIndex = indexPath.row;
     
     [self.navigationController pushViewController:infoVC animated:YES];
 }

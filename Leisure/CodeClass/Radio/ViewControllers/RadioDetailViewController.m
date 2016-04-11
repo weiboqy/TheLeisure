@@ -24,7 +24,7 @@
 
 /**列表数据源*/
 @property (strong, nonatomic)NSMutableArray *listArr;
-@property (strong, nonatomic)NSMutableArray *playListArr;
+//@property (strong, nonatomic)NSMutableArray *playListArr;
 
 /**列表*/
 @property (strong, nonatomic)UITableView *tableView;
@@ -34,10 +34,13 @@
 @property (assign, nonatomic)NSInteger start;
 @property (assign, nonatomic)BOOL isFrefresh;
 @property (assign, nonatomic)NSInteger limit;
+
+
 @end
 
 @implementation RadioDetailViewController
 
+static NSInteger count = 0;
 
 #pragma mark  ----懒加载
 - (NSMutableArray *)listArr {
@@ -47,12 +50,12 @@
     return _listArr;
 }
 
-- (NSMutableArray *)playListArr {
-    if (_playListArr == nil) {
-        _playListArr = [[NSMutableArray alloc]initWithCapacity:0];
-    }
-    return _playListArr;
-}
+//- (NSMutableArray *)playListArr {
+//    if (_playListArr == nil) {
+//        _playListArr = [[NSMutableArray alloc]initWithCapacity:0];
+//    }
+//    return _playListArr;
+//}
 
 #pragma mark   ----数据加载
 - (void)loadNewData{
@@ -120,9 +123,9 @@
             
             //显示 上拉刷新
             self.tableView.mj_footer.hidden = NO;
-        });
+        });          //请求结束 关闭指示器
           
-          //请求结束 关闭指示器
+
           [SVProgressHUD dismiss];
         
     } error:^(NSError *error) {
@@ -149,8 +152,33 @@
             RadioDetailListModel *listModel = [[RadioDetailListModel alloc]init];
             
             [listModel setValuesForKeysWithDictionary:refreshDic];
+
+            // 创建playinfo
+            RadioPlayInfo *playInfo = [[RadioPlayInfo alloc] init];
+            [playInfo setValuesForKeysWithDictionary:refreshDic[@"playInfo"]];
+            QYLog(@"webUrl =====%@", playInfo.webview_url);
+            
+            // 创建authorinfo
+            RadioUserInfoModel *authorInfo = [[RadioUserInfoModel alloc] init];
+            [authorInfo setValuesForKeysWithDictionary:refreshDic[@"playInfo"][@"authorinfo"]];
+            playInfo.authorinfo = authorInfo;
+            
+            // 创建shareinfo
+            RadioShareInfo *shareInfo = [[RadioShareInfo alloc] init];
+            [shareInfo setValuesForKeysWithDictionary:refreshDic[@"playInfo"][@"shareinfo"]];
+            playInfo.shareinfo = shareInfo;
+            
+            // 创建userinfo
+            RadioUserInfoModel *userInfo = [[RadioUserInfoModel alloc] init];
+            [userInfo setValuesForKeysWithDictionary:refreshDic[@"playInfo"][@"userinfo"]];
+            playInfo.userInfo = userInfo;
+            
+            listModel.playInfo = playInfo;
+            
+           
           listModel.total = [refreshDic[@"data"][@"total"] integerValue];
             [self.listArr addObject:listModel];
+            count += self.listArr.count;
         }
         
         
@@ -159,10 +187,14 @@
             
             RadioDetailListModel *model = self.listArr[self.listArr.count - 1];
             
-            if (model.total == self.listArr.count) {
+            if (model.total == count) {
+                QYLog(@"结束");
+                
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }else{
                 [self.tableView.mj_footer endRefreshing];
+                QYLog(@"total = %ld, count = %ld", model.total, count);
+                QYLog(@"还有");
             }
             
             [self.tableView reloadData];
@@ -176,6 +208,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    count = 0;
     //加载数据
 //    [self reloadData]; 启用第三方
     [self loadNewData];

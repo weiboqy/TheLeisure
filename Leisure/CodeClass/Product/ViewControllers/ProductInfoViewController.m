@@ -7,6 +7,7 @@
 //
 
 #import "ProductInfoViewController.h"
+#import "ProductInfoModel.h"
 
 @interface ProductInfoViewController ()
 
@@ -19,6 +20,9 @@
     [NetWorkRequesManager requestWithType:POST urlString:@"http://api2.pianke.me/group/posts_info" parDic:@{@"contentid" : _contentid} finish:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
         QYLog(@"%@", dic);
+        ProductInfoModel *infoModel = [[ProductInfoModel alloc]init];
+        [infoModel setValuesForKeysWithDictionary:dic];
+        QYLog(@" html == %@", infoModel.title);
     } error:^(NSError *error) {
         
     }];

@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-#import "TopicListModel.h"
+#import "TopicDetailModel.h"
 
 @interface TopicInfoViewController : BaseViewController
 
-@property (strong, nonatomic)TopicListModel *model;
+@property (assign, nonatomic)NSInteger selecteIndex;
+/**话题ID*/
+@property (copy, nonatomic)NSString *contentid;
 
 @end

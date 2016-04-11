@@ -15,6 +15,8 @@
 #import "TopicViewController.h"
 #import "MenuFootView.h"
 #import "MenuHeaderView.h"
+#import "LoginViewController.h"
+#import "UserInfoManager.h"
 
 
 @interface MenuViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -45,8 +47,9 @@
 //创建列表
 - (void)createListView {
     self.headerView = [[MenuHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
+    [_headerView.name addTarget:self action:@selector(loginClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.headerView];
-    self.footView = [[MenuFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWidth, 60)];
+    self.footView = [[MenuFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWidth, 90)];
     [self.view addSubview:self.footView];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 150, ScreenWidth, ScreenHeight - 150 - 90) style:UITableViewStylePlain];
@@ -55,6 +58,40 @@
     self.tableView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.tableView];
 }
+
+//当登陆成功后，将"登陆/注册"换成用户名
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![[UserInfoManager getUserAuth] isEqualToString:@" "] ) {
+        [_headerView.name setTitle:[NSString stringWithFormat:@"%@", [UserInfoManager getUserName]] forState:UIControlStateNormal];
+//        _headerView.iconImage.image = [UIImage imageNamed:[UserInfoManager getUsercoverimg]];
+    }else {
+        return;
+    }
+}
+
+- (void)loginClick {
+    //已经登陆 ，取消登陆
+    if (![[UserInfoManager getUserAuth] isEqualToString:@" "]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提醒...." message:@"你已经登陆,是否取消登陆" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [alertController dismissViewControllerAnimated:YES completion:nil];
+        }];
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [UserInfoManager cancelUserAuth];
+            [UserInfoManager cancelUserID];
+            [_headerView.name setTitle:@"登陆/注册" forState:UIControlStateNormal];
+        }];
+        [alertController addAction:action];
+        [alertController addAction:action2];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+    }
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    [self presentViewController:loginVC animated:YES completion:nil];
+   
+}
+
 
 - (NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.menu count];

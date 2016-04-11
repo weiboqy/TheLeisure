@@ -18,6 +18,7 @@
 
 #pragma mark -创建方和初始化方法-
 
+/** 创建单例 */
 + (instancetype)defaultManager {
     static PlayerManager *playerManager = nil;
     static dispatch_once_t onceToken;
@@ -29,13 +30,15 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        _playType = playTypeList;  // 默认是顺序播放
-        _playerState = playerStatePause;  // 默认暂停状态
+        /** 默认是顺序播放 */
+        _playType = playTypeList;
+        /** 默认暂停状态 */
+        _playerState = playerStatePause;
     }
     return self;
 }
 
-//  重写播放源的setter，getter
+/**重写播放源的setter，getter*/
 -(NSMutableArray *)musicArray {
     if (!_musicArray) {
         _musicArray = [[NSMutableArray alloc] init];
@@ -44,41 +47,41 @@
 }
 - (void)setMusicArray:(NSMutableArray *)musicArray{
     
-    // 将原始播放列表清空
+    /**将原始播放列表清空*/
     [self.musicArray removeAllObjects];
-    // 重新给列表赋值
+    /** 重新给列表赋值 */
     [self.musicArray addObjectsFromArray:musicArray];
     
-    // 根据播放位置创建播放单元
+    /** 根据播放位置创建播放单元 */
     AVPlayerItem *avPlayerItem = nil;
-    // 通过网络路径来创建
+    /** 通过网络路径来创建 */
     if ([musicArray[_playIndex] hasPrefix:@"http"]) {
         avPlayerItem = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:_musicArray[_playIndex]]];
     } else {
-        // 通过本地路径来创建
+        /** 通过本地路径来创建 */
         avPlayerItem = [[AVPlayerItem alloc]initWithURL:[NSURL fileURLWithPath:_musicArray[_playIndex]]];
     }
     
-    // 创建播放器，如果存在切换播放单元，否则根据播放单元创建新的播放器
+    /** 创建播放器，如果存在切换播放单元，否则根据播放单元创建新的播放器 */
     if (_avPlayer) {
         [_avPlayer replaceCurrentItemWithPlayerItem:avPlayerItem];
     } else {
         _avPlayer = [[AVPlayer alloc]initWithPlayerItem:avPlayerItem];
     }
-    // 默认设置播放状态是暂停状态
+    /** 默认设置播放状态是暂停状态 */
     _playerState = playerStatePause;
 }
 
-//  获取当前时长
+/**  获取当前时长 */
 - (float)currentTime {
-    //  当前基数为零
+    /**  当前基数为零 */
     if (_avPlayer.currentItem.timebase == 0) {
         return 0;
     }
     return _avPlayer.currentTime.value / _avPlayer.currentTime.timescale;
 }
 
-//  获取总时长
+/**  获取总时长 */
 - (float)totalTime {
     if (_avPlayer.currentItem.duration.timescale == 0) {
         return 0;
@@ -87,30 +90,31 @@
 }
 
 #pragma mark -播放控制-
-//  播放
+/** 播放 */
 - (void)play {
     [_avPlayer play];
     _playerState = playerStatePlay;
 }
 
-//  暂停
+/** 暂停 */
 - (void)pause {
     [_avPlayer pause];
     _playerState = playerStatePause;
 }
 
-// 停止
+/** 停止 */
 - (void)stop {
     [self seekToNewTime:0];
     [self pause];
 }
 
-// 上一首
+/** 上一首 */
 - (void)lastMusic {
-    // 随机模式
+    /** 随机模式 */
     if (_playType == playTypeRandom) {
         _playIndex = arc4random() % _musicArray.count;
-    }else{ // 其他模式
+    }else{
+        /** 其他模式 */
         if (_playIndex == 0) {
             _playIndex = _musicArray.count - 1;
         }
@@ -120,12 +124,13 @@
     }
     [self changeMusicWithIndex:_playIndex];
 }
-// 下一首
+/** 下一首 */
 - (void)nextMusic {
-    // 随机模式
+    /** 随机模式 */
     if (_playType == playTypeRandom) {
         _playIndex = arc4random() % _musicArray.count;
-    }else{ // 其他模式
+    }else{
+        /** 其他模式 */
         _playIndex++;
         if (_playIndex == _musicArray.count) {
             _playIndex = 0;
@@ -133,27 +138,27 @@
     }
     [self changeMusicWithIndex:_playIndex];
 }
-// 指定位置播放
+/** 指定位置播放 */
 - (void)seekToNewTime:(float)time {
-    // 获取播放器的当前时间
+    /** 获取播放器的当前时间 */
     CMTime newTime = _avPlayer.currentTime;
-    // 重新设置播放的时间
+    /** 重新设置播放的时间 */
     newTime.value = newTime.timescale * time;
-    // 播放器跳转到新的时间
+    /** 播放器跳转到新的时间 */
     [_avPlayer seekToTime:newTime];
 }
 
-//  按照指定位置进行切换
+/**  按照指定位置进行切换 */
 - (void)changeMusicWithIndex:(NSInteger)index
 {
-    // 将指定位置赋值给当前位置
+    /** 将指定位置赋值给当前位置 */
     _playIndex = index;
     AVPlayerItem *avPlayerItem = nil;
-    // 通过网络路径来创建
+    /** 通过网络路径来创建 */
     if ([_musicArray[_playIndex] hasPrefix:@"http"]) {
         avPlayerItem = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:_musicArray[_playIndex]]];
     } else {
-        // 通过本地路径来创建
+        /** 通过本地路径来创建 */
         avPlayerItem = [[AVPlayerItem alloc]initWithURL:[NSURL fileURLWithPath:_musicArray[_playIndex]]];
     }
     [_avPlayer replaceCurrentItemWithPlayerItem:avPlayerItem];
@@ -161,10 +166,11 @@
     [self play];
 }
 
-//  播放完成
+/** 播放完成 */
 - (void)playerDidFinish{
     if (_playType == playTypeSingle) {
-        _playIndex--;  // 单曲播放完成之后还是当前位置
+        /** 单曲播放完成之后还是当前位置 */
+        _playIndex--;
     } else{
         
     }

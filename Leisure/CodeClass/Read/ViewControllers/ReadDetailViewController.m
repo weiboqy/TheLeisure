@@ -9,6 +9,7 @@
 #import "ReadDetailViewController.h"
 #import "ReadDetailModel.h"
 #import "FactoryTableViewCell.h"
+#import "ReadInfoViewController.h"
 
 
 @interface ReadDetailViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -38,9 +39,6 @@
 @property (strong, nonatomic)UIButton *NEW;
 @property (strong, nonatomic)UIButton *HOT;
 
-/**请求参数*/
-@property (assign, nonatomic)BOOL isHot;
-@property (assign, nonatomic)BOOL isAddtime;
 
 @end
 
@@ -73,14 +71,15 @@
     parDic[@"limit"] = @(_limit);
     parDic[@"typeid"] = _typeID;
     [NetWorkRequesManager requestWithType:POST urlString:READDETAILLIST_URL parDic:parDic finish:^(NSData *data) {
-        if (_isAddtime == 0) {
+        if (data == nil) return ;
+        if (_startAddtime == 0) {
             [self.addtimeListArr removeAllObjects];
         }
-        if (_isHot == 0) {
+        if (_startHot == 0) {
             [self.hotListArr removeAllObjects];
         }
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
-        QYLog(@"%@", dic);
+//        QYLog(@"%@", dic);
         //获取详情列表里的数据源
         for (NSDictionary *listDic in dic[@"data"][@"list"]) {
             ReadDetailModel *detailModel = [[ReadDetailModel alloc] init];
@@ -97,7 +96,7 @@
         //回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.requestSort == 0) {
-                _isAddtime = 1;
+                
                 [self.addTableView reloadData];
                 //停止刷新;
                 [self.addTableView.mj_header endRefreshing];
@@ -105,7 +104,7 @@
                 [self.hotTableView.mj_header endRefreshing];
                 [self.hotTableView.mj_footer endRefreshing];
             }else {
-                _isHot = 1;
+               
                 [self.hotTableView reloadData];
                 //停止刷新
                 [self.hotTableView.mj_header endRefreshing];
@@ -159,8 +158,10 @@
     //默认请求列表是addtime
     _requestSort = 0;
     
-//    [self requestDataWithSort:@"addtime"];
-   
+//    [self requestDataWithSort:@"addtime"]; 启用第三方
+    //默认显示
+    [self loadNewAddtimeData];
+    
     [self creatListTable];
     
     //以导航条左下角为原点
@@ -184,35 +185,30 @@
     self.addTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreAddtimeData)];
     
     // 马上进入刷新状态
-    [self.addTableView.mj_header beginRefreshing];
-    [self.hotTableView.mj_header beginRefreshing];
-    [self.addTableView.mj_footer beginRefreshing];
-    [self.hotTableView.mj_footer beginRefreshing];
-    //默认显示
-    [self loadNewAddtimeData];
+//    [self.addTableView.mj_header beginRefreshing];
+//    [self.hotTableView.mj_header beginRefreshing];
+//    [self.addTableView.mj_footer beginRefreshing];
+//    [self.hotTableView.mj_footer beginRefreshing];
+    
     
 }
 - (void)loadNewAddtimeData {
-    //隐藏上拉
-    self.addTableView.mj_footer.hidden = YES;
+    
     _startAddtime = 0;
     [self requestDataWithSort:@"addtime"];
 }
 - (void)loadNewHotData {
-    //隐藏上拉
-    self.addTableView.mj_footer.hidden = YES;
+    
     _startHot = 0;
     [self requestDataWithSort:@"hot"];
 }
 - (void)loadMoreAddtimeData {
-    //显示上拉
-    self.addTableView.mj_footer.hidden = NO;
+    
     _startAddtime += 10;
     [self requestDataWithSort:@"addtime"];
 }
 - (void)loadMoreHotData {
-    //显示上拉
-    self.addTableView.mj_footer.hidden = NO;
+    
     _startHot += 10;
     [self requestDataWithSort:@"hot"];
     
@@ -233,6 +229,8 @@
     
     _HOT = [[UIButton alloc] initWithFrame:CGRectMake(_NEW.frame.size.width + _NEW.frame.origin.x + 30, _NEW.frame.origin.y, _NEW.frame.size.width, _NEW.frame.size.height)];
     _HOT.tag = 111;
+    
+    
     [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
     [_HOT addTarget:self action:@selector(HOTAction) forControlEvents:(UIControlEventTouchUpInside)];
     [navigationBar addSubview:_HOT];
@@ -257,13 +255,13 @@
     }
     [self requestDataWithSort:@"hot"];
     
-    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
-    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
+   //放在后面 会有异常 不起作用
+//    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW2"] forState:UIControlStateNormal];
+//    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT1"] forState:UIControlStateNormal];
 }
 - (void)NEWAction {
     [self.addTableView.mj_header beginRefreshing];
-    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
-    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
+    
     CGPoint offset = CGPointMake(0, 0);
     self.rootScrollView.contentOffset = offset;
     self.requestSort = 0;
@@ -274,6 +272,9 @@
     }
     [self requestDataWithSort:@"addtime"];
     
+    //放在后面 会有异常 不起作用
+//    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
+//    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -300,6 +301,18 @@
     }
     
     
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ReadInfoViewController *infoVC = [[ReadInfoViewController alloc]init];
+    if (_requestSort == 0) {
+        ReadDetailModel *model = self.addtimeListArr[indexPath.row];
+        infoVC.contentid = model.contentID;
+    }else {
+        ReadDetailModel *model = self.hotListArr[indexPath.row];
+        infoVC.contentid = model.contentID;
+    }
+    
+    [self.navigationController pushViewController:infoVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

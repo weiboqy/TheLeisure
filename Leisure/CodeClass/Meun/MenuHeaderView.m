@@ -8,6 +8,7 @@
 
 #import "MenuHeaderView.h"
 
+
 @implementation MenuHeaderView
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -21,9 +22,10 @@
         
         _name = [UIButton buttonWithType:UIButtonTypeCustom];
         _name.frame = CGRectZero;
+
         [_name setTitle:@"登陆/注册" forState:UIControlStateNormal];
-        [_name setTintColor:[UIColor blackColor]];
-//        _name.font = [UIFont systemFontOfSize:18];
+        [_name setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
         [self addSubview:_name];
         
         _downButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -38,12 +40,16 @@
     }
     return self;
 }
-
+- (void)loginClick {
+//    LoginViewController *loginVC = [[LoginViewController alloc]init];
+//    [self.navigationController pushViewController:loginVC animated:YES];
+    QYLog(@"----是不是啥");
+}
 - (void)layoutSubviews {
     [super layoutSubviews];
 //    CGFloat downW = self.frame.size.width / 4;
     _iconImage.frame = CGRectMake(15, 20, 80, 80);
-    _name.frame = CGRectMake(110, 45, 100, 30);
+    _name.frame = CGRectMake(90, 45, 100, 30);
     _downButton.frame = CGRectMake(55, 120, 20, 20);
     _loveButton.frame = CGRectMake(130, 120, 20, 20);
     

@@ -28,6 +28,7 @@
 #import <MJRefresh/MJRefresh.h>
 #import "PlayerManager.h"
 #import <SVProgressHUD.h>
+#import "NSString+Html.h"
 
 
 #ifdef DEBUG
@@ -37,5 +38,5 @@
 #endif
 
 #define PLACEHOLDERIMAGE [UIImage imageNamed:@"placeHolder"]
-
+#define QYLogFunc QYLog(@"%s",__func__)
 #endif /* PinaKe_Prefix_pch */

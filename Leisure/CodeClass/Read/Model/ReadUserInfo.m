@@ -1,20 +1,17 @@
 //
-//  RadioUserInfoModel.m
+//  ReadUserInfo.m
 //  Leisure
 //
-//  Created by lanou on 16/3/30.
+//  Created by lanou on 16/4/8.
 //  Copyright © 2016年 xqy. All rights reserved.
 //
 
-#import "RadioUserInfoModel.h"
+#import "ReadUserInfo.h"
 
-@implementation RadioUserInfoModel
-
+@implementation ReadUserInfo
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     
 }
-
-
 
 @end

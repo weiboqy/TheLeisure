@@ -9,45 +9,64 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-// 播放模式
+/** 播放模式 */
 typedef NS_ENUM(NSInteger, PlayType){
-    playTypeSingle, // 单曲
-    playTypeRandom, // 随机
-    playTypeList    // 顺序
+    /** 单曲 */
+    playTypeSingle,
+    /** 随机 */
+    playTypeRandom,
+    /** 顺序 */
+    playTypeList
 };
-// 播放状态
+/** 播放状态 */
 typedef NS_ENUM(NSInteger, PlayerState){
-    playerStatePlay,  // 播放
-    playerStatePause  // 暂停
+    /** 播放 */
+    playerStatePlay,
+    /** 暂停 */
+    playerStatePause
 };
 
 
 @interface PlayerManager : NSObject
 
-@property (nonatomic, assign, readonly)PlayerState playerState;  // 播放状态
-@property (nonatomic, assign) PlayType playType; // 播放模式
+/** 播放状态 */
+@property (nonatomic, assign, readonly)PlayerState playerState;
+/** 播放模式 */
+@property (nonatomic, assign) PlayType playType;
 
-@property (nonatomic, strong) NSMutableArray *musicArray;  // 传入的播放列表
-@property (assign) NSUInteger playIndex;  //传入播放位置
+/** 传入的播放列表 */
+@property (nonatomic, strong) NSMutableArray *musicArray;
+/** 传入播放位置 */
+@property (assign) NSUInteger playIndex;
 
-@property (nonatomic, assign, readonly) float currentTime; // 当前时长
-@property (nonatomic, assign, readonly) float totalTime; // 总时长
+/** 当前时长 */
+@property (nonatomic, assign, readonly) float currentTime;
+/** 总时长 */
+@property (nonatomic, assign, readonly) float totalTime;
 
-@property (nonatomic, strong)AVPlayer *avPlayer; // 播放器对象
+/** 播放器对象 */
+@property (nonatomic, strong)AVPlayer *avPlayer;
 
-//  单例创建对象
+/** 单例创建对象 */
 + (instancetype)defaultManager;
 
-- (void)play; // 播放
-- (void)pause;  // 暂停
-- (void)stop;  // 停止
-- (void)seekToNewTime:(float)time; // 指定位置播放
+/** 播放 */
+- (void)play;
+/** 暂停 */
+- (void)pause;
+/** 停止 */
+- (void)stop;
+/** 指定位置播放 */
+- (void)seekToNewTime:(float)time;
 
-- (void)lastMusic; // 上一首
-- (void)nextMusic; // 下一首
-- (void)changeMusicWithIndex:(NSInteger)index; // 指定位置切换
-
-- (void)playerDidFinish; // 播放完成
+/** 上一首 */
+- (void)lastMusic;
+/** 下一首 */
+- (void)nextMusic;
+/** 指定位置切换 */
+- (void)changeMusicWithIndex:(NSInteger)index;
+/** 播放完成 */
+- (void)playerDidFinish;
 
 
 @end
