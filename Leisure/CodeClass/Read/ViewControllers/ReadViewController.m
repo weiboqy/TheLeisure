@@ -200,9 +200,23 @@
     }
 }
 
+//通常是用来加载数据类嘈杂
+- (void)viewWillAppear:(BOOL)animated {
+    // 使用像这样的系统方法，一定要使用继承过来的父类方法
+    [super viewWillAppear:animated];
+    
+}
+
+//当应用程序收到内存警告时会被触发,而且是工程内所有的控制器对象(viewController类被创建过的对象,并且对象没有被释放)都会收到;
+//当收到内存警告时，要释放可再生的内存数据,通过方法可以讲资源冲洗加载回来
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+   //在内存警告方法中，释放已经加载的并且不在当前window上显示的根视图
+    //因为控制器的根视图是一个lazyloading
+//    if ([self isViewLoaded] && ![self.view.window]) {
+//        self.view = nil;
+//    }
 }
 
 

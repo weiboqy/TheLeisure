@@ -17,6 +17,7 @@
 #import "MenuHeaderView.h"
 #import "LoginViewController.h"
 #import "UserInfoManager.h"
+#import "UserCollectViewController.h"
 
 
 @interface MenuViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -48,6 +49,7 @@
 - (void)createListView {
     self.headerView = [[MenuHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     [_headerView.name addTarget:self action:@selector(loginClick) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.loveButton addTarget:self action:@selector(likeClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.headerView];
     self.footView = [[MenuFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWidth, 90)];
     [self.view addSubview:self.footView];
@@ -58,6 +60,7 @@
     self.tableView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.tableView];
 }
+
 
 //当登陆成功后，将"登陆/注册"换成用户名
 - (void)viewWillAppear:(BOOL)animated {
@@ -70,6 +73,7 @@
     }
 }
 
+//登陆按钮的实现
 - (void)loginClick {
     //已经登陆 ，取消登陆
     if (![[UserInfoManager getUserAuth] isEqualToString:@" "]) {
@@ -92,6 +96,14 @@
    
 }
 
+//收藏按钮的实现
+- (void)likeClick {
+    UserCollectViewController *collectVC = [[UserCollectViewController alloc]init];
+    [self presentViewController:collectVC animated:YES completion:nil];
+}
+
+
+#pragma mark  ---UITableViewDelegate \ UITableViewDataSource
 
 - (NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.menu count];
@@ -144,7 +156,7 @@
         
     }
 }
-
+//封装
 - (void)setRootViewController:(BaseViewController *)viewController menuController:(DrawerViewController *)menuController {
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     [menuController setNavController:navigationController animated:YES];

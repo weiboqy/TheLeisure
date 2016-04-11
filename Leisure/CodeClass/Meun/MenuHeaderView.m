@@ -40,11 +40,7 @@
     }
     return self;
 }
-- (void)loginClick {
-//    LoginViewController *loginVC = [[LoginViewController alloc]init];
-//    [self.navigationController pushViewController:loginVC animated:YES];
-    QYLog(@"----是不是啥");
-}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 //    CGFloat downW = self.frame.size.width / 4;

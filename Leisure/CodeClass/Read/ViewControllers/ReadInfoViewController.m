@@ -9,6 +9,8 @@
 #import "ReadInfoViewController.h"
 #import "ReadInfoModel.h"
 #import "ReadCommentViewController.h"
+#import "ReadDetailDB.h"
+#import "LoginViewController.h"
 
 @interface ReadInfoViewController ()
 
@@ -104,7 +106,19 @@
     
     UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     likeButton.frame = CGRectMake(commentButton.frame.origin.x + commentButton.frame.size.width + 15, 14, 17, 17);
-    [likeButton setBackgroundImage:[UIImage imageNamed:@"喜欢2"] forState:UIControlStateNormal];
+    [likeButton setBackgroundImage:[UIImage imageNamed:@"喜欢1"] forState:UIControlStateNormal];
+    [likeButton addTarget:self action:@selector(likeClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //查询本条消息是否已经存储， 如果已经存储的话，按钮显示已经收藏状态
+    ReadDetailDB *db = [[ReadDetailDB alloc]init];
+    NSArray *array = [db findWithUserID:[UserInfoManager getUserID]];
+    for (ReadDetailModel *model in array) {
+        if ([model.title isEqualToString:_detailModel.title]) {
+            [likeButton setBackgroundImage:[UIImage imageNamed:@"喜欢2"] forState:UIControlStateNormal];
+            break;
+        }
+    }
+    
     [bar addSubview:likeButton];
     
     UIButton *othersButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -117,10 +131,52 @@
 - (void)back {
     [self.navigationController popViewControllerAnimated:YES];
 }
+//评论功能的实现
 - (void)commentClick {
     ReadCommentViewController *commentVC = [[ReadCommentViewController alloc]init];
     commentVC.contentid = _contentid;
     [self.navigationController pushViewController:commentVC animated:YES];
+}
+
+//收藏功能的实现
+- (void)likeClick:(id)sender {
+    UIButton *likeButton = (UIButton *)sender;
+    
+    //如果用户已经登陆 直接收藏 ，没有登陆就弹出登陆页面
+    if (![[UserInfoManager getUserID] isEqualToString:@" "]) {
+        //创建数据表
+        ReadDetailDB *db = [[ReadDetailDB alloc]init];
+        [db createDataTable];
+        
+        //查询数据是否存储， 如果存储就取消存储
+        NSArray *array = [db findWithUserID:[UserInfoManager getUserID]];
+        for (ReadDetailModel *model  in array) {
+            if ([model.title isEqualToString:_detailModel.title]) {
+                [db deleteDetailWithTitle:_detailModel.title];
+                [likeButton setBackgroundImage:[UIImage imageNamed:@"喜欢1"] forState:UIControlStateNormal];
+                return ;
+            }
+        }
+        //否则的话，调用保存方法进行存储
+        [db saveDetailModel:_detailModel];
+        [likeButton setBackgroundImage:[UIImage imageNamed:@"喜欢2"] forState:UIControlStateNormal];
+    }else {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提醒...." message:@"你还未登陆,是否现在登陆" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            [self presentViewController:loginVC animated:YES completion:nil];
+            
+        }];
+        [alertController addAction:action1];
+        [alertController addAction:action2];
+        [self presentViewController:alertController animated:YES completion:nil];
+
+    }
+    
+   
 }
 
 

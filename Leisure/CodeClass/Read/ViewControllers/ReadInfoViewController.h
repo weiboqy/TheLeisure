@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "ReadDetailModel.h"
 
 @interface ReadInfoViewController : BaseViewController
 
 @property (copy, nonatomic)NSString *contentid;
+@property (strong, nonatomic)ReadDetailModel *detailModel;
 
 @end

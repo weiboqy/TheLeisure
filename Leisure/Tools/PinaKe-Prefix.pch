@@ -29,6 +29,7 @@
 #import "PlayerManager.h"
 #import <SVProgressHUD.h>
 #import "NSString+Html.h"
+#import "UserInfoManager.h"
 
 
 #ifdef DEBUG

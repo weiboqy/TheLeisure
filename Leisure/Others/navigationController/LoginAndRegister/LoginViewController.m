@@ -76,6 +76,9 @@
     NSLog(@"%@",info);
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     _headerImageView.image = image;
+    NSData *data = UIImagePNGRepresentation(image);
+    NSString *imageString = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    [UserInfoManager conserveUsercoverimg:imageString];
     [picker dismissViewControllerAnimated:YES completion:nil];
 
 }
@@ -125,15 +128,23 @@
                [UserInfoManager conserveUserName:dataDic[@"data"][@"uname"]];
                //保存用户头像
                [UserInfoManager conserveUsercoverimg:dataDic[@"data"][@"coverimg"]];
-               [self dismissViewControllerAnimated:YES completion:nil];
+              
+               UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"欢迎%@回来", [UserInfoManager getUserName]] message: nil preferredStyle:UIAlertControllerStyleAlert];
+               UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                   [self dismissViewControllerAnimated:YES completion:nil];
+               }];
+               [alertController addAction:action];
+               [self presentViewController:alertController animated:YES completion:nil];
+               
+//                [self dismissViewControllerAnimated:YES completion:nil];
                [SVProgressHUD dismiss];
            }
           
        });
         dispatch_async(dispatch_get_main_queue(), ^{
-            MenuHeaderView *headerView = [[MenuHeaderView alloc]init];
-            [headerView.name setTitle:[NSString stringWithFormat:@"%@", dataDic[@"data"][@"uname"]] forState:UIControlStateNormal];
-            QYLog(@"%@", dataDic[@"data"][@"uname"]);
+//            MenuHeaderView *headerView = [[MenuHeaderView alloc]init];
+//            [headerView.name setTitle:[NSString stringWithFormat:@"%@", dataDic[@"data"][@"uname"]] forState:UIControlStateNormal];
+//            QYLog(@"%@", dataDic[@"data"][@"uname"]);
         });
         
     } error:^(NSError *error) {

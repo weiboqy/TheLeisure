@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>FMDB.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MJRefresh.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,7 +37,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7AE49EEF4AB3810F313783F71F2822F4</key>
+		<key>07B27B3D106906D35E82297BB2DA11C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3490DEBFA61EE81FAEBD7730C7B76A9C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>40398E816A5670E36B198BA274DF2C1D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -42,17 +57,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D3884A361B173A0E11C1AEF2F11D004A</key>
+		<key>9F12FB4A63E20F601CFB2E64A65B57C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E0D01C7C391BBAF3F2633A73F55A944C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF2EBD1509E420B7857E70C1A7D88DA7</key>
+		<key>EBEF45BA3B99B91CB2D88A28426A2E8F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

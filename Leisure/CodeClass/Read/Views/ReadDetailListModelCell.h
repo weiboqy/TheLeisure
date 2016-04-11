@@ -8,6 +8,7 @@
 
 #import "BaseTableViewCell.h"
 
+
 @interface ReadDetailListModelCell : BaseTableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *coveingImage;

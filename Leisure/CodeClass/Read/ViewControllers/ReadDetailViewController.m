@@ -307,9 +307,11 @@
     if (_requestSort == 0) {
         ReadDetailModel *model = self.addtimeListArr[indexPath.row];
         infoVC.contentid = model.contentID;
+        infoVC.detailModel = model;
     }else {
         ReadDetailModel *model = self.hotListArr[indexPath.row];
         infoVC.contentid = model.contentID;
+        infoVC.detailModel = model;
     }
     
     [self.navigationController pushViewController:infoVC animated:YES];
