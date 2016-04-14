@@ -21,14 +21,14 @@
 //创建数据表
 - (void)createDataTable{
     //查询数据表中的元素个数
-    FMResultSet *set = [_dataBase executeQuery:[NSString stringWithFormat:@"select count(*) from sqlite_master where type = 'table' and name = '%@'", @"ReadDetail"]];
+    FMResultSet *set = [_dataBase executeQuery:[NSString stringWithFormat:@"select count(*) from sqlite_master where type = 'table' and name = '%@'", READDETAILTABLE]];
     [set next];
     NSInteger count = [set intForColumnIndex:0];
     if (count) {
         QYLog(@"数据表已经存在");
     }else {
         //创建新的数据表
-        NSString *sql = [NSString stringWithFormat:@"CREATE TABLE %@ (readID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userID text, title text, contentID text, content text, name  text, coverimg text)", @"ReadDetail"];
+        NSString *sql = [NSString stringWithFormat:@"CREATE TABLE %@ (readID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userID text, title text, contentID text, content text, name  text, coverimg text)", READDETAILTABLE];
         BOOL res = [_dataBase executeUpdate:sql];
         if (!res) {
             QYLog(@"数据库创建成功");
@@ -41,7 +41,7 @@
 //插入一条数据
 - (void)saveDetailModel:(ReadDetailModel *)detailModel{
     //创建插入语句
-    NSMutableString *query = [NSMutableString stringWithFormat:@"INSERT INTO %@ (userID, title, contentid, content, name, coverimg) values (?,?,?,?,?,?)", @"ReadDetail"];
+    NSMutableString *query = [NSMutableString stringWithFormat:@"INSERT INTO %@ (userID, title, contentid, content, name, coverimg) values (?,?,?,?,?,?)",READDETAILTABLE];
     //创建插入内容
     NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:0];
     if (![[UserInfoManager getUserID] isEqualToString:@" "]) {
@@ -71,14 +71,14 @@
 
 //删除一条数据
 - (void)deleteDetailWithTitle:(NSString *)detailTitle{
-    NSString *query = [NSString stringWithFormat:@"DELETE FROm %@ WHERE title = '%@'", @"ReadDetail", detailTitle];
+    NSString *query = [NSString stringWithFormat:@"DELETE FROm %@ WHERE title = '%@'", READDETAILTABLE, detailTitle];
    [_dataBase executeUpdate:query];
     QYLog(@"删除成功");
 }
 
 //查询所有数据
 - (NSArray *)findWithUserID:(NSString *)userID{
-    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE userID = '%@'", @"ReadDetail", userID];
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE userID = '%@'",READDETAILTABLE, userID];
     FMResultSet *set = [_dataBase executeQuery:query];
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:[set columnCount]];
     while ([set next]) {

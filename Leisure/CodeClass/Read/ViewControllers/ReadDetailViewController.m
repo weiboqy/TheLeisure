@@ -261,7 +261,8 @@
 }
 - (void)NEWAction {
     [self.addTableView.mj_header beginRefreshing];
-    
+    [_NEW setBackgroundImage:[UIImage imageNamed:@"NEW1"] forState:UIControlStateNormal];
+    [_HOT setBackgroundImage:[UIImage imageNamed:@"HOT2"] forState:UIControlStateNormal];
     CGPoint offset = CGPointMake(0, 0);
     self.rootScrollView.contentOffset = offset;
     self.requestSort = 0;

@@ -10,7 +10,6 @@
 		0C63A6C609FAF42D0FFAF5A6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB5CC89DB51EF8FA4ECE0A8 /* libPods.a */; };
 		7906D0871CBB98F1002BEED6 /* UserCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7906D0851CBB98F1002BEED6 /* UserCollectViewController.m */; };
 		7906D0881CBB98F1002BEED6 /* UserCollectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7906D0861CBB98F1002BEED6 /* UserCollectViewController.xib */; };
-		7906D08B1CBB9952002BEED6 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7906D08A1CBB9952002BEED6 /* DBManager.m */; };
 		7906D08E1CBB9CD1002BEED6 /* ReadDetailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 7906D08D1CBB9CD1002BEED6 /* ReadDetailDB.m */; };
 		79077A291CB269E4008DC854 /* ProductTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79077A271CB269E4008DC854 /* ProductTableViewCell.m */; };
 		79077A2A1CB269E4008DC854 /* ProductTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79077A281CB269E4008DC854 /* ProductTableViewCell.xib */; };
@@ -32,6 +31,13 @@
 		791F4A2C1CB13FEF00856FC9 /* u58.png in Resources */ = {isa = PBXBuildFile; fileRef = 791F4A2B1CB13FEF00856FC9 /* u58.png */; };
 		791F4A2F1CB143DD00856FC9 /* RadioDetailHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F4A2E1CB143DD00856FC9 /* RadioDetailHeader.m */; };
 		791F4A331CB14FA200856FC9 /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */; };
+		791FACB51CBE236F0000F3BB /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACB01CBE236F0000F3BB /* DBManager.m */; };
+		791FACB61CBE236F0000F3BB /* NetWorkRequesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACB41CBE236F0000F3BB /* NetWorkRequesManager.m */; };
+		791FACB91CBE243F0000F3BB /* Download.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACB81CBE243F0000F3BB /* Download.m */; };
+		791FACBC1CBE248F0000F3BB /* DownLoadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACBB1CBE248F0000F3BB /* DownLoadManager.m */; };
+		791FACBF1CBE31970000F3BB /* RadioDetailListDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACBE1CBE31970000F3BB /* RadioDetailListDB.m */; };
+		791FACC41CBE4A650000F3BB /* DownloadRadioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791FACC21CBE4A650000F3BB /* DownloadRadioViewController.m */; };
+		791FACC51CBE4A650000F3BB /* DownloadRadioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791FACC31CBE4A650000F3BB /* DownloadRadioViewController.xib */; };
 		7928A3B81CB6A09400C254C9 /* RadioPlayControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7928A3B71CB6A09400C254C9 /* RadioPlayControlView.m */; };
 		7928A3BB1CB6A5D500C254C9 /* RadioPlayUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7928A3BA1CB6A5D500C254C9 /* RadioPlayUserView.m */; };
 		7928A3BD1CB6A5E400C254C9 /* RadioPlayUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7928A3BC1CB6A5E400C254C9 /* RadioPlayUserView.xib */; };
@@ -66,7 +72,6 @@
 		79626D291CABFA3F0097FCA9 /* ProductUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79626D281CABFA3F0097FCA9 /* ProductUserInfoModel.m */; };
 		798BE8C21CB88F1500A17559 /* ReadCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 798BE8C11CB88F1500A17559 /* ReadCommentModel.m */; };
 		798BE8C51CB8A34300A17559 /* KeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 798BE8C41CB8A34300A17559 /* KeyBoardView.m */; };
-		79A100FD1CAA869700E069CA /* NetWorkRequesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A100FC1CAA869700E069CA /* NetWorkRequesManager.m */; };
 		79A101001CAA9F3600E069CA /* ReadListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A100FF1CAA9F3600E069CA /* ReadListModel.m */; };
 		79A101031CAAADCD00E069CA /* ReadCarouseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A101021CAAADCD00E069CA /* ReadCarouseModel.m */; };
 		79BC00001CB7B39300CB309E /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79BCFFFE1CB7B39300CB309E /* LoginViewController.xib */; };
@@ -145,8 +150,6 @@
 		7906D0841CBB98F1002BEED6 /* UserCollectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCollectViewController.h; sourceTree = "<group>"; };
 		7906D0851CBB98F1002BEED6 /* UserCollectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCollectViewController.m; sourceTree = "<group>"; };
 		7906D0861CBB98F1002BEED6 /* UserCollectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCollectViewController.xib; sourceTree = "<group>"; };
-		7906D0891CBB9952002BEED6 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
-		7906D08A1CBB9952002BEED6 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 		7906D08C1CBB9CD1002BEED6 /* ReadDetailDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadDetailDB.h; sourceTree = "<group>"; };
 		7906D08D1CBB9CD1002BEED6 /* ReadDetailDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadDetailDB.m; sourceTree = "<group>"; };
 		79077A261CB269E4008DC854 /* ProductTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTableViewCell.h; sourceTree = "<group>"; };
@@ -183,6 +186,19 @@
 		791F4A2E1CB143DD00856FC9 /* RadioDetailHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioDetailHeader.m; sourceTree = "<group>"; };
 		791F4A311CB14FA200856FC9 /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavigationBar.h; sourceTree = "<group>"; };
 		791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavigationBar.m; sourceTree = "<group>"; };
+		791FACAF1CBE236F0000F3BB /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		791FACB01CBE236F0000F3BB /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		791FACB31CBE236F0000F3BB /* NetWorkRequesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkRequesManager.h; sourceTree = "<group>"; };
+		791FACB41CBE236F0000F3BB /* NetWorkRequesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkRequesManager.m; sourceTree = "<group>"; };
+		791FACB71CBE243F0000F3BB /* Download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Download.h; sourceTree = "<group>"; };
+		791FACB81CBE243F0000F3BB /* Download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Download.m; sourceTree = "<group>"; };
+		791FACBA1CBE248F0000F3BB /* DownLoadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownLoadManager.h; sourceTree = "<group>"; };
+		791FACBB1CBE248F0000F3BB /* DownLoadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownLoadManager.m; sourceTree = "<group>"; };
+		791FACBD1CBE31970000F3BB /* RadioDetailListDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioDetailListDB.h; sourceTree = "<group>"; };
+		791FACBE1CBE31970000F3BB /* RadioDetailListDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioDetailListDB.m; sourceTree = "<group>"; };
+		791FACC11CBE4A650000F3BB /* DownloadRadioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadRadioViewController.h; sourceTree = "<group>"; };
+		791FACC21CBE4A650000F3BB /* DownloadRadioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadRadioViewController.m; sourceTree = "<group>"; };
+		791FACC31CBE4A650000F3BB /* DownloadRadioViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadRadioViewController.xib; sourceTree = "<group>"; };
 		7928A3B61CB6A09400C254C9 /* RadioPlayControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioPlayControlView.h; sourceTree = "<group>"; };
 		7928A3B71CB6A09400C254C9 /* RadioPlayControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioPlayControlView.m; sourceTree = "<group>"; };
 		7928A3B91CB6A5D500C254C9 /* RadioPlayUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioPlayUserView.h; sourceTree = "<group>"; };
@@ -229,8 +245,8 @@
 		79626D131CABB1900097FCA9 /* TopicUserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicUserInfoModel.h; sourceTree = "<group>"; };
 		79626D141CABB1900097FCA9 /* TopicUserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicUserInfoModel.m; sourceTree = "<group>"; };
 		79626D161CABC0330097FCA9 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
-		79626D181CABC0A10097FCA9 /* RadioListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadioListModel.h; path = ../CodeClass/Radio/Model/RadioListModel.h; sourceTree = "<group>"; };
-		79626D191CABC0A10097FCA9 /* RadioListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadioListModel.m; path = ../CodeClass/Radio/Model/RadioListModel.m; sourceTree = "<group>"; };
+		79626D181CABC0A10097FCA9 /* RadioListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioListModel.h; sourceTree = "<group>"; };
+		79626D191CABC0A10097FCA9 /* RadioListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioListModel.m; sourceTree = "<group>"; };
 		79626D1B1CABC1D10097FCA9 /* RadioUserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioUserInfoModel.h; sourceTree = "<group>"; };
 		79626D1C1CABC1D10097FCA9 /* RadioUserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioUserInfoModel.m; sourceTree = "<group>"; };
 		79626D1E1CABC5370097FCA9 /* RadioCarouseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCarouseModel.h; sourceTree = "<group>"; };
@@ -246,8 +262,6 @@
 		79A100F51CAA85CA00E069CA /* PinaKe-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinaKe-Prefix.pch"; sourceTree = "<group>"; };
 		79A100F91CAA867000E069CA /* URLHeaderDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLHeaderDefine.h; sourceTree = "<group>"; };
 		79A100FA1CAA868500E069CA /* ConstantsDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantsDefine.h; sourceTree = "<group>"; };
-		79A100FB1CAA869700E069CA /* NetWorkRequesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkRequesManager.h; sourceTree = "<group>"; };
-		79A100FC1CAA869700E069CA /* NetWorkRequesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkRequesManager.m; sourceTree = "<group>"; };
 		79A100FE1CAA9F3600E069CA /* ReadListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadListModel.h; sourceTree = "<group>"; };
 		79A100FF1CAA9F3600E069CA /* ReadListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadListModel.m; sourceTree = "<group>"; };
 		79A101011CAAADCD00E069CA /* ReadCarouseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadCarouseModel.h; sourceTree = "<group>"; };
@@ -403,6 +417,45 @@
 				791F4A321CB14FA200856FC9 /* CustomNavigationBar.m */,
 			);
 			path = navigationController;
+			sourceTree = "<group>";
+		};
+		791FACAE1CBE236F0000F3BB /* DBManager */ = {
+			isa = PBXGroup;
+			children = (
+				791FACAF1CBE236F0000F3BB /* DBManager.h */,
+				791FACB01CBE236F0000F3BB /* DBManager.m */,
+			);
+			path = DBManager;
+			sourceTree = "<group>";
+		};
+		791FACB11CBE236F0000F3BB /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				791FACB71CBE243F0000F3BB /* Download.h */,
+				791FACB81CBE243F0000F3BB /* Download.m */,
+				791FACBA1CBE248F0000F3BB /* DownLoadManager.h */,
+				791FACBB1CBE248F0000F3BB /* DownLoadManager.m */,
+			);
+			path = Download;
+			sourceTree = "<group>";
+		};
+		791FACB21CBE236F0000F3BB /* NetWorkRequesManager */ = {
+			isa = PBXGroup;
+			children = (
+				791FACB31CBE236F0000F3BB /* NetWorkRequesManager.h */,
+				791FACB41CBE236F0000F3BB /* NetWorkRequesManager.m */,
+			);
+			path = NetWorkRequesManager;
+			sourceTree = "<group>";
+		};
+		791FACC01CBE4A400000F3BB /* DownloadRadio */ = {
+			isa = PBXGroup;
+			children = (
+				791FACC11CBE4A650000F3BB /* DownloadRadioViewController.h */,
+				791FACC21CBE4A650000F3BB /* DownloadRadioViewController.m */,
+				791FACC31CBE4A650000F3BB /* DownloadRadioViewController.xib */,
+			);
+			path = DownloadRadio;
 			sourceTree = "<group>";
 		};
 		79A100F41CAA6C0A00E069CA /* image */ = {
@@ -610,6 +663,8 @@
 		79C6AE871CA927CE00354BBB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				79626D181CABC0A10097FCA9 /* RadioListModel.h */,
+				79626D191CABC0A10097FCA9 /* RadioListModel.m */,
 				79626D1B1CABC1D10097FCA9 /* RadioUserInfoModel.h */,
 				79626D1C1CABC1D10097FCA9 /* RadioUserInfoModel.m */,
 				79626D1E1CABC5370097FCA9 /* RadioCarouseModel.h */,
@@ -622,6 +677,8 @@
 				79315F991CB4E0D0007ED8A0 /* RadioPlayInfo.m */,
 				79315F9B1CB4E1DD007ED8A0 /* RadioShareInfo.h */,
 				79315F9C1CB4E1DD007ED8A0 /* RadioShareInfo.m */,
+				791FACBD1CBE31970000F3BB /* RadioDetailListDB.h */,
+				791FACBE1CBE31970000F3BB /* RadioDetailListDB.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -808,20 +865,17 @@
 		79C6AE931CA927CE00354BBB /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				791FACAE1CBE236F0000F3BB /* DBManager */,
+				791FACB11CBE236F0000F3BB /* Download */,
+				791FACB21CBE236F0000F3BB /* NetWorkRequesManager */,
 				79BC00171CB7F26000CB309E /* Html */,
 				79A100F51CAA85CA00E069CA /* PinaKe-Prefix.pch */,
 				79A100F91CAA867000E069CA /* URLHeaderDefine.h */,
 				79A100FA1CAA868500E069CA /* ConstantsDefine.h */,
-				79A100FB1CAA869700E069CA /* NetWorkRequesManager.h */,
-				79A100FC1CAA869700E069CA /* NetWorkRequesManager.m */,
 				79315F951CB4B1F1007ED8A0 /* PlayerManager.h */,
 				79315F961CB4B1F1007ED8A0 /* PlayerManager.m */,
 				79BCFFF91CB7B2F200CB309E /* UserInfoManager.h */,
 				79BCFFFA1CB7B2F200CB309E /* UserInfoManager.m */,
-				79626D181CABC0A10097FCA9 /* RadioListModel.h */,
-				79626D191CABC0A10097FCA9 /* RadioListModel.m */,
-				7906D0891CBB9952002BEED6 /* DBManager.h */,
-				7906D08A1CBB9952002BEED6 /* DBManager.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -829,6 +883,7 @@
 		79C6AEDD1CA92A2100354BBB /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				791FACC01CBE4A400000F3BB /* DownloadRadio */,
 				7906D0831CBB989A002BEED6 /* Collect */,
 				791F4A301CB14F2500856FC9 /* navigationController */,
 				79BCFFF81CB7B2D400CB309E /* LoginAndRegister */,
@@ -984,6 +1039,7 @@
 				79077A371CB29C94008DC854 /* TopicNotPicViewCell.xib in Resources */,
 				79C6AEC01CA9292B00354BBB /* ReadViewController.xib in Resources */,
 				79C6AED41CA9296500354BBB /* TopicInfoViewController.xib in Resources */,
+				791FACC51CBE4A650000F3BB /* DownloadRadioViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1061,8 +1117,11 @@
 				79C6AEC91CA9294300354BBB /* ReadInfoViewController.m in Sources */,
 				79BCFFF71CB79AAF00CB309E /* TopicDetailModel.m in Sources */,
 				79BC00041CB7B3A100CB309E /* RegisterViewController.m in Sources */,
+				791FACB91CBE243F0000F3BB /* Download.m in Sources */,
+				791FACB61CBE236F0000F3BB /* NetWorkRequesManager.m in Sources */,
 				794BAD681CACC0E1009C2EE9 /* ReadListModelCell.m in Sources */,
 				79077A291CB269E4008DC854 /* ProductTableViewCell.m in Sources */,
+				791FACB51CBE236F0000F3BB /* DBManager.m in Sources */,
 				7928A3B81CB6A09400C254C9 /* RadioPlayControlView.m in Sources */,
 				794BAD6D1CACD18C009C2EE9 /* ReadDetailListModelCell.m in Sources */,
 				79626D171CABC0330097FCA9 /* Foundation+Log.m in Sources */,
@@ -1099,19 +1158,21 @@
 				79BC00081CB7ED2700CB309E /* ReadShareInfo.m in Sources */,
 				79F8A31B1CB94E5200FBAFB6 /* ProductInfoModel.m in Sources */,
 				791F49071CB0F4C800856FC9 /* RadioInfoModel.m in Sources */,
+				791FACC41CBE4A650000F3BB /* DownloadRadioViewController.m in Sources */,
 				79626D151CABB1900097FCA9 /* TopicUserInfoModel.m in Sources */,
 				79BC00281CB7FEDB00CB309E /* ReadCommentCell.m in Sources */,
 				79077A361CB29C94008DC854 /* TopicNotPicViewCell.m in Sources */,
 				794BAD721CACD685009C2EE9 /* ReadDetailModel.m in Sources */,
 				79A101031CAAADCD00E069CA /* ReadCarouseModel.m in Sources */,
+				791FACBC1CBE248F0000F3BB /* DownLoadManager.m in Sources */,
 				79C6AED31CA9296500354BBB /* TopicInfoViewController.m in Sources */,
 				79C6AED81CA9299900354BBB /* BaseViewController.m in Sources */,
 				7956C30B1CAD5B2D0013F905 /* TopicTableViewCell.m in Sources */,
 				79BCFFFB1CB7B2F200CB309E /* UserInfoManager.m in Sources */,
 				79C6AEB01CA928FE00354BBB /* RadioViewController.m in Sources */,
 				79BC000E1CB7EECD00CB309E /* ReadInfoCounter.m in Sources */,
+				791FACBF1CBE31970000F3BB /* RadioDetailListDB.m in Sources */,
 				79C6AE541CA924F400354BBB /* ViewController.m in Sources */,
-				79A100FD1CAA869700E069CA /* NetWorkRequesManager.m in Sources */,
 				79BC001B1CB7F26000CB309E /* NSString+Html.m in Sources */,
 				79BC00111CB7EF0700CB309E /* ReadInfoModel.m in Sources */,
 				794BAD761CAD23EC009C2EE9 /* ReadCollectionHeaderView.m in Sources */,
@@ -1126,7 +1187,6 @@
 				79C6AEA61CA928D500354BBB /* ProductViewController.m in Sources */,
 				791F490B1CB10DF100856FC9 /* RadioDetailTableViewCell.m in Sources */,
 				79077A301CB2854F008DC854 /* MenuFootView.m in Sources */,
-				7906D08B1CBB9952002BEED6 /* DBManager.m in Sources */,
 				794BAD651CACBBEB009C2EE9 /* FactoryCollectionViewCell.m in Sources */,
 				79C6AE4E1CA924F400354BBB /* main.m in Sources */,
 				79C6AEC41CA9293800354BBB /* ReadDetailViewController.m in Sources */,

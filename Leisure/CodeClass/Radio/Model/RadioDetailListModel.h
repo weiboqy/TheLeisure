@@ -21,7 +21,16 @@
 @property (copy, nonatomic)NSString *coverimg;
 /** 总数 */
 @property (assign, nonatomic)NSInteger total;
+/** 是否最新 */
+@property (assign, nonatomic)BOOL isnew;
 
+//数据库缺的字段
+/** 下载保存的文件路径 */
+@property (copy, nonatomic)NSString *path;
+@property (copy, nonatomic)NSString *UserID;
+/**用户名*/
+@property (copy, nonatomic)NSString *uname;
+@property (copy, nonatomic)NSString *webview_url;
 
 @property (strong, nonatomic)RadioPlayInfo *playInfo;// 播放列表模型
 

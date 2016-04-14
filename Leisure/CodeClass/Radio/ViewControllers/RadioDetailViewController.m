@@ -147,7 +147,7 @@ static NSInteger count = 0;
     [NetWorkRequesManager requestWithType:POST urlString:RADIODETAILMORE_URL parDic:parDic finish:^(NSData *data) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
-//        QYLog(@"=========%@", dic);
+        QYLog(@"=========%@", dic);
         for (NSDictionary *refreshDic in dic[@"data"][@"list"]) {
             RadioDetailListModel *listModel = [[RadioDetailListModel alloc]init];
             
@@ -156,7 +156,7 @@ static NSInteger count = 0;
             // 创建playinfo
             RadioPlayInfo *playInfo = [[RadioPlayInfo alloc] init];
             [playInfo setValuesForKeysWithDictionary:refreshDic[@"playInfo"]];
-            QYLog(@"webUrl =====%@", playInfo.webview_url);
+//            QYLog(@"webUrl =====%@", playInfo.webview_url);
             
             // 创建authorinfo
             RadioUserInfoModel *authorInfo = [[RadioUserInfoModel alloc] init];
@@ -274,9 +274,9 @@ static NSInteger count = 0;
     RadioDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RadioDetailTableViewCell class])];
     RadioDetailListModel *model = self.listArr[indexPath.row]
     ;
+    // 设置播放按钮的存在
+    [cell.actionButton setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
     [cell.actionButton addTarget:self action:@selector(actionPlay) forControlEvents:UIControlEventTouchUpInside];
-
-//    [self actionPlay:indexPath.row];
     [cell setDataWithModel:model];
     return cell;
 }

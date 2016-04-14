@@ -18,6 +18,7 @@
 #import "LoginViewController.h"
 #import "UserInfoManager.h"
 #import "UserCollectViewController.h"
+#import "DownloadRadioViewController.h"
 
 
 @interface MenuViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -50,6 +51,7 @@
     self.headerView = [[MenuHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
     [_headerView.name addTarget:self action:@selector(loginClick) forControlEvents:UIControlEventTouchUpInside];
     [_headerView.loveButton addTarget:self action:@selector(likeClick) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.downButton addTarget:self action:@selector(downloadClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.headerView];
     self.footView = [[MenuFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWidth, 90)];
     [self.view addSubview:self.footView];
@@ -100,6 +102,12 @@
 - (void)likeClick {
     UserCollectViewController *collectVC = [[UserCollectViewController alloc]init];
     [self presentViewController:collectVC animated:YES completion:nil];
+}
+
+// 下载按钮的实现
+- (void)downloadClick {
+    DownloadRadioViewController *downloadVC = [[DownloadRadioViewController alloc]init];
+    [self presentViewController:downloadVC animated:YES completion:nil];
 }
 
 

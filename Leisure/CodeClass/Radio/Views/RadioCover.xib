@@ -20,7 +20,11 @@
                                 <constraint firstAttribute="height" constant="30" id="Xzg-tW-5HZ"/>
                                 <constraint firstAttribute="width" constant="29" id="gBl-8h-EMv"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
                             <state key="normal" backgroundImage="下载12"/>
+                            <connections>
+                                <action selector="downloadClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="e1f-uh-ht2"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l1k-Yk-t0x">
                             <rect key="frame" x="131" y="479" width="30" height="30"/>
@@ -29,6 +33,9 @@
                                 <constraint firstAttribute="height" constant="30" id="Y16-Ha-bT9"/>
                             </constraints>
                             <state key="normal" backgroundImage="喜欢12"/>
+                            <connections>
+                                <action selector="likeClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="teg-LC-D3B"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kq4-sm-j2J">
                             <rect key="frame" x="227" y="479" width="30" height="30"/>
@@ -37,6 +44,9 @@
                                 <constraint firstAttribute="width" constant="30" id="nMN-sH-awC"/>
                             </constraints>
                             <state key="normal" backgroundImage="评论12"/>
+                            <connections>
+                                <action selector="commentClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="281-ir-BbC"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esh-jq-Ign">
                             <rect key="frame" x="270" y="386" width="74" height="21"/>
@@ -70,6 +80,9 @@
                                 <constraint firstAttribute="height" constant="30" id="jyL-tC-lIF"/>
                             </constraints>
                             <state key="normal" backgroundImage="分享12"/>
+                            <connections>
+                                <action selector="shareClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="KeY-Ke-dCN"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WsN-Su-SE8">
                             <rect key="frame" x="47" y="282" width="287" height="23"/>

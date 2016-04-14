@@ -14,6 +14,7 @@
 
 
 
+
 @interface RadioPlayViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 /**根视图*/
@@ -217,6 +218,7 @@
     [_rootScrollView addSubview:_coverView];
 }
 
+
 #pragma mark  ----自定义导航条
 - (void)addCustomNavigationBar {
     CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc]initWithFrame:CGRectMake(0, 20, ScreenWidth, 44)];
@@ -224,6 +226,9 @@
     [self.view addSubview:navigationBar];
 }
 - (void)back {
+    // 下载管理界面返回
+    [self dismissViewControllerAnimated:YES completion:nil];
+    // 上一级界面返回
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -7,6 +7,9 @@
 //
 
 #import "RadioCover.h"
+#import "Download.h"
+#import "DownLoadManager.h"
+#import "RadioDetailListDB.h"
 
 @implementation RadioCover
 
@@ -17,9 +20,45 @@
 }
 
 
+- (IBAction)downloadClick:(id)sender {
+    // 创建一个下载对象,并且用下载管理器进行管理
+    Download *download = [[DownLoadManager defaultManager] addDownloadWithUrl:_listModel.musicUrl];
+    
+    // 让下载对象开始工作
+    [download start];
+    
+    // 监控进度
+    download.downLoading = ^(float progress) {
+        UIButton *button = (UIButton *)sender;
+        [button setTitle:[NSString stringWithFormat:@"%.2f%%", progress] forState:UIControlStateNormal];
+    };
+    download.downloadFinish = ^(NSString *url, NSString *savePath) {
+        // 1.UI变化
+        [sender setTitle:@"完成" forState:UIControlStateNormal];
+        // 2.数据变化(数据模型、本地音频路径)
+        //2.1 存电台详情列表的数据
+        RadioDetailListDB *radioDetailDB = [[RadioDetailListDB alloc]init];
+        [radioDetailDB createDataTable];
+        [radioDetailDB saveDataWithModel:_listModel andPath:savePath];
+        //2.2 存playInfo
+        
+        
+        // 3.移除下载对象
+        [[DownLoadManager defaultManager] removeDownloadWithUrl:_listModel.musicUrl];
+    };
+}
 
+- (IBAction)likeClick:(id)sender {
+    QYLogFunc;
+}
 
+- (IBAction)commentClick:(id)sender {
+    QYLogFunc;
+}
 
+- (IBAction)shareClick:(id)sender {
+    QYLogFunc;
+}
 
 
 //- (instancetype)initWithFrame:(CGRect)frame {

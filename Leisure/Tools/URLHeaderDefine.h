@@ -37,4 +37,8 @@
 #define TOPICINFO_URL          @"http://api2.pianke.me/group/posts_info"  // 话题详情
 
 
+#define READDETAILTABLE  @"ReadDetail"
+#define RADIODETAILTABLE  @"RadioDetail"
+
+
 #endif /* URLHeaderDefine_h */
