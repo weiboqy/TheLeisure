@@ -43,7 +43,7 @@
 /** 将模型数据和本地的音频路径保存到数据表中 */
 - (void)saveDataWithModel:(RadioDetailListModel *)model andPath:(NSString *)path {
     //创建插入语句
-    NSMutableString *query = [NSMutableString stringWithFormat:@"INSERT INTO %@ (userID, coverimg, isnew, musicUrl, title, musicVisit, path, webview_url, uname) values (?,?,?,?,?,?,?,?,?)",RADIODETAILTABLE];
+    NSMutableString *query = [NSMutableString stringWithFormat:@"INSERT INTO %@ (userID, coverimg, isnew, musicUrl, title, musicVisit, path) values (?,?,?,?,?,?,?)",RADIODETAILTABLE];
     //创建插入内容
     NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:0];
     if (![[UserInfoManager getUserID] isEqualToString:@" "]) {
@@ -54,8 +54,6 @@
     [arguments addObject:model.musicUrl];
     [arguments addObject:model.title];
     [arguments addObject:model.musicVisit];
-    [arguments addObject:model.playInfo.webview_url];
-    [arguments addObject:model.playInfo.userInfo.uname];
     [arguments addObject:path];
     QYLog(@"query = %@", query);
     QYLog(@"成功下载一条数据");
@@ -82,8 +80,7 @@
         model.musicUrl = [set stringForColumn:@"musicUrl"];
         model.title = [set stringForColumn:@"title"];
         model.musicVisit = [set stringForColumn:@"musicVisit"];
-        model.webview_url = [set stringForColumn:@"playInfo.webview_url"];
-        model.uname = [set stringForColumn:@"playInfo.userInfo.uname"];
+
         [array addObject:model];
     }
     [set close];
